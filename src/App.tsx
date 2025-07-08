@@ -108,11 +108,18 @@ function App() {
           </div>
         ))}
       </div>
-      {isLoading && <p className="text-center">Getting explanation...</p>}
+      {isLoading && (
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p>Getting explanation...</p>
+        </div>
+      )}
       {aiResponse && (
-        <div className="mt-4">
-          <h3>Explanation</h3>
-          <p>{aiResponse}</p>
+        <div className="mt-4 p-3 border rounded bg-light shadow-sm ai-response">
+          <h3 className="mb-3">Explanation</h3>
+          <pre className="mb-0" style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{aiResponse}</pre>
         </div>
       )}
     </div>
