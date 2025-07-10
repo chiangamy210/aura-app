@@ -1,6 +1,7 @@
+
+
 import ReactMarkdown from 'react-markdown';
 import { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import quotes from './quotes.json';
 import './App.css';
@@ -11,7 +12,6 @@ interface Quote {
 }
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    document.title = 'Aura - Your Gentle Guide';
     if (countdown > 0) {
       const timer = setTimeout(() => {
         setCountdown(countdown - 1);
@@ -43,7 +44,7 @@ function App() {
 
   const handleExplainClick = (card: Quote) => {
     setSelectedCard(card);
-    const question = prompt('What is your question?');
+    const question = prompt('What is your question about this card?');
     if (question) {
       setUserQuestion(question);
       getExplanation(card, question);
@@ -62,7 +63,7 @@ function App() {
 
     try {
       const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
-      const prompt = `Explain the following quote in the context of my question.\n\nQuote: "${card.quote}"\nCategory: "${card.category}"\n\nMy question: "${question}"`;
+      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question.\n\nQuote: "${card.quote}"\nCategory: "${card.category}"\n\nMy question: "${question}"\n\nKeep the explanation concise, kind, and easy to understand.`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
@@ -80,56 +81,56 @@ function App() {
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">Aura</h1>
-      <p className="text-center">
-        Think of a topic or an issue that you want to know...
-      </p>
-      {!showButtons && <p className="text-center">...{countdown}</p>}
+    <div className="app-container">
+      <header className="app-header">
+        <h1>Aura</h1>
+        <p>Think of a topic or an issue that you want to know...</p>
+        {!showButtons && <p className="countdown">...{countdown}</p>}
+      </header>
+
       {showButtons && (
-        <div className="d-flex justify-content-center mb-4">
+        <div className="draw-button-container">
           <button className="btn btn-primary" onClick={() => drawCards(1)}>
             Draw a Card
           </button>
         </div>
       )}
-      <div className="d-flex justify-content-center">
+
+      <main className="card-container">
         {drawnCards.map((card, index) => (
           <div
-            className="col-md-6"
+            className="card card-reveal"
             key={index}
+            style={{ animationDelay: `${index * 0.5}s` }}
           >
-            <div
-              className="card h-100 card-reveal"
-              style={{ animationDelay: `${index * 0.5}s` }}
-            >
-              <div className="card-body">
-                <h5 className="card-title">{card.category}</h5>
-                <p className="card-text">{card.quote}</p>
-                <button
-                  className="btn btn-info btn-sm"
-                  onClick={() => handleExplainClick(card)}
-                >
-                  More Explain
-                </button>
-              </div>
+            <div className="card-body">
+              <h5 className="card-title">{card.category}</h5>
+              <p className="card-text">{card.quote}</p>
+              <button
+                className="btn btn-info btn-sm"
+                onClick={() => handleExplainClick(card)}
+              >
+                Explain More
+              </button>
             </div>
           </div>
         ))}
-      </div>
+      </main>
+
       {isLoading && (
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
+        <div className="loading-indicator">
+          <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
-          <p>Getting explanation...</p>
+          <p>Getting your explanation...</p>
         </div>
       )}
+
       {aiResponse && (
-        <div className="mt-4 p-3 border rounded bg-light shadow-sm ai-response">
-          <h3 className="mb-3">Explanation</h3>
+        <section className="ai-response">
+          <h3>An Insight for You</h3>
           <ReactMarkdown>{aiResponse}</ReactMarkdown>
-        </div>
+        </section>
       )}
     </div>
   );

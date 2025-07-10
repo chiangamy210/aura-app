@@ -1,13 +1,130 @@
+:root {
+  --primary-color: #f3d2c1;
+  --secondary-color: #c3e0e5;
+  --accent-color: #f7a399;
+  --text-color: #5c5c5c;
+  --bg-color: #fdf6f0;
+  --card-bg: #ffffff;
+  --shadow-color: rgba(92, 92, 92, 0.1);
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Georgia', serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.app-header {
+  text-align: center;
+}
+
+h1 {
+  font-family: var(--font-serif);
+  color: var(--accent-color);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.app-header p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.countdown {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-top: 1rem;
+}
+
+.draw-button-container {
+  margin-bottom: 1rem;
+}
+
+.btn {
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #f8b4ab;
+  border-color: #f8b4ab;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(247, 163, 153, 0.5);
+}
+
+.btn-info {
+  background-color: transparent;
+  border-color: var(--secondary-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  padding: 8px 20px;
+}
+
+.btn-info:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(195, 224, 229, 0.6);
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 16px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  border: 1px solid #f0e9e4;
+  border-radius: 15px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 25px var(--shadow-color);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  text-align: center;
+  width: 100%;
 }
 
 .card-reveal {
-  animation: reveal 1s ease-out forwards;
+  animation: reveal 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   opacity: 0;
 }
 
@@ -22,41 +139,49 @@
   }
 }
 
-.ai-response {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 0.25rem;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  transition: all 0.3s ease-in-out;
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin: 0 0 1rem 0;
 }
 
-.ai-response:hover {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.card-text {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: var(--text-color);
+  margin: 0 0 1.5rem 0;
+}
+
+.loading-indicator {
+  text-align: center;
 }
 
 .spinner-border {
   width: 3rem;
   height: 3rem;
+  color: var(--accent-color);
+  border-width: .2em;
 }
 
+.ai-response {
+  background-color: #fffaf7;
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 25px var(--shadow-color);
+  width: 100%;
+  text-align: left;
+}
 
 .ai-response h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin: 0 0 1.5rem 0;
+  text-align: center;
 }
 
-.ai-response ul, .ai-response ol {
-  padding-left: 2rem;
-  margin-bottom: 1rem;
+.ai-response p, .ai-response ul, .ai-response ol {
+  line-height: 1.8;
 }
-
-.ai-response li {
-  margin-bottom: 0.5rem;
-}
-
-.ai-response p {
-    margin-bottom: 1rem;
-}
-
