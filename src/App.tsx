@@ -80,6 +80,10 @@ function App() {
     }
   };
 
+  const handleStartOver = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -88,7 +92,7 @@ function App() {
         {!showButtons && <p className="countdown">...{countdown}</p>}
       </header>
 
-      {showButtons && (
+      {showButtons && drawnCards.length === 0 && (
         <div className="draw-button-container">
           <button className="btn btn-primary" onClick={() => drawCards(1)}>
             Draw a Card
@@ -116,6 +120,14 @@ function App() {
           </div>
         ))}
       </main>
+
+      {drawnCards.length > 0 && (
+        <div className="start-over-container">
+          <button className="btn btn-secondary" onClick={handleStartOver}>
+            Draw Another Card
+          </button>
+        </div>
+      )}
 
       {isLoading && (
         <div className="loading-indicator">

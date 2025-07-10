@@ -1,3 +1,4 @@
+
 :root {
   --primary-color: #f3d2c1;
   --secondary-color: #c3e0e5;
@@ -65,7 +66,7 @@ h1 {
   margin-top: 1rem;
 }
 
-.draw-button-container {
+.draw-button-container, .start-over-container {
   margin-bottom: 1rem;
 }
 
@@ -88,6 +89,19 @@ h1 {
 .btn-primary:hover {
   background-color: #f8b4ab;
   border-color: #f8b4ab;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(247, 163, 153, 0.5);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-color);
+  color: white;
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(247, 163, 153, 0.5);
 }
