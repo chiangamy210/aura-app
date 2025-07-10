@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -51,8 +52,16 @@ function App() {
 
   const getExplanation = async (card: Quote, question: string) => {
     setIsLoading(true);
+    setAiResponse('');
+
+    if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
+      setAiResponse('Error: API Key not found. Please make sure you have set up your .env file with your VITE_GEMINI_API_KEY.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
       const prompt = `Explain the following quote in the context of my question.\n\nQuote: "${card.quote}"\nCategory: "${card.category}"\n\nMy question: "${question}"`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -60,9 +69,12 @@ function App() {
       setAiResponse(text);
     } catch (error) {
       console.error('Error getting explanation:', error);
-      setAiResponse('Sorry, I had trouble getting an explanation. Please try again.');
-    }
- finally {
+      let errorMessage = 'An unknown error occurred. Please try again.';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      setAiResponse(`Sorry, I had trouble getting an explanation.\n\nError details: ${errorMessage}`);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -76,18 +88,15 @@ function App() {
       {!showButtons && <p className="text-center">...{countdown}</p>}
       {showButtons && (
         <div className="d-flex justify-content-center mb-4">
-          <button className="btn btn-primary me-2" onClick={() => drawCards(1)}>
-            Draw One Card
-          </button>
-          <button className="btn btn-secondary" onClick={() => drawCards(3)}>
-            Draw Three Cards
+          <button className="btn btn-primary" onClick={() => drawCards(1)}>
+            Draw a Card
           </button>
         </div>
       )}
-      <div className={drawnCards.length === 1 ? 'd-flex justify-content-center' : 'row'}>
+      <div className="d-flex justify-content-center">
         {drawnCards.map((card, index) => (
           <div
-            className={drawnCards.length === 1 ? 'col-md-6' : 'col-md-4 mb-4'}
+            className="col-md-6"
             key={index}
           >
             <div
@@ -119,7 +128,7 @@ function App() {
       {aiResponse && (
         <div className="mt-4 p-3 border rounded bg-light shadow-sm ai-response">
           <h3 className="mb-3">Explanation</h3>
-          <pre className="mb-0" style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{aiResponse}</pre>
+          <ReactMarkdown>{aiResponse}</ReactMarkdown>
         </div>
       )}
     </div>

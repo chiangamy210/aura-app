@@ -41,3 +41,22 @@
   height: 3rem;
 }
 
+
+.ai-response h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ai-response ul, .ai-response ol {
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.ai-response li {
+  margin-bottom: 0.5rem;
+}
+
+.ai-response p {
+    margin-bottom: 1rem;
+}
+
