@@ -28,6 +28,8 @@ function App() {
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [showHowAuraWorks, setShowHowAuraWorks] = useState(false);
+  const [showHowToAsk, setShowHowToAsk] = useState(false);
 
   useEffect(() => {
     const loadQuotes = async () => {
@@ -128,10 +130,20 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="language-switcher">
-        <button onClick={() => changeLanguage('en')}>English</button>
-        <button onClick={() => changeLanguage('es')}>Español</button>
-        <button onClick={() => changeLanguage('zh-TW')}>繁體中文</button>
+      <div className="top-bar">
+        <div className="language-switcher">
+          <button onClick={() => changeLanguage('en')} className={i18n.language === 'en' ? 'active' : ''}>English</button>
+          <button onClick={() => changeLanguage('es')} className={i18n.language === 'es' ? 'active' : ''}>Español</button>
+          <button onClick={() => changeLanguage('zh-TW')} className={i18n.language === 'zh-TW' ? 'active' : ''}>繁體中文</button>
+        </div>
+        <div className="how-it-works-switcher">
+          <button onClick={() => setShowHowAuraWorks(!showHowAuraWorks)} className={showHowAuraWorks ? 'active' : ''}>
+            {t('how_aura_works')}
+          </button>
+          <button onClick={() => setShowHowToAsk(!showHowToAsk)} className={showHowToAsk ? 'active' : ''}>
+            {t('how_to_ask')}
+          </button>
+        </div>
       </div>
       <header className="app-header">
         <h1>{t('title')}</h1>
@@ -191,6 +203,45 @@ function App() {
           <ReactMarkdown>{aiResponse}</ReactMarkdown>
         </section>
       )}
+
+      {showHowAuraWorks && (
+        <section className="how-aura-works">
+          <h2>{t('how_aura_works_title')}</h2>
+          <p>{t('how_aura_works_intro')}</p>
+          <p>{t('how_aura_works_quantum_intro')}</p>
+          <h4>{t('how_aura_works_observer_effect_title')}</h4>
+          <p>{t('how_aura_works_observer_effect_text')}</p>
+          <h4>{t('how_aura_works_entanglement_title')}</h4>
+          <p>{t('how_aura_works_entanglement_text')}</p>
+          <p>{t('how_aura_works_conclusion')}</p>
+        </section>
+      )}
+
+      {showHowToAsk && (
+        <section className="how-to-ask">
+          <h2>{t('how_to_ask_title')}</h2>
+          <p>{t('how_to_ask_intro')}</p>
+          <h4>{t('how_to_ask_step1_title')}</h4>
+          <p>{t('how_to_ask_step1_text')}</p>
+          <h4>{t('how_to_ask_step2_title')}</h4>
+          <p>{t('how_to_ask_step2_text')}</p>
+          <h4>{t('how_to_ask_step3_title')}</h4>
+          <p>{t('how_to_ask_step3_text')}</p>
+          <h4>{t('how_to_ask_step4_title')}</h4>
+          <p>{t('how_to_ask_step4_text')}</p>
+          <h4>{t('how_to_ask_examples_title')}</h4>
+          <p>{t('how_to_ask_examples_intro')}</p>
+          <ul>
+            <li>{t('how_to_ask_example1')}</li>
+            <li>{t('how_to_ask_example2')}</li>
+            <li>{t('how_to_ask_example3')}</li>
+          </ul>
+        </section>
+      )}
+
+      <footer className="app-footer">
+        <p>{t('footer_text')}</p>
+      </footer>
     </div>
   );
 }
