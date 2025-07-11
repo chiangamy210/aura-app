@@ -85,11 +85,16 @@ function App() {
     const question = prompt(t('question_prompt'));
     if (question) {
       setUserQuestion(question);
-      getExplanation(card, question, i18n.language);
+      getExplanation(i18n.language);
     }
   };
 
-  const getExplanation = async (card: Quote, question: string, lang: string | null) => {
+  const getExplanation = async (lang: string | null) => {
+    if (!selectedCard || !userQuestion) {
+      console.error('selectedCard or userQuestion is null');
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setAiResponse('');
 
@@ -103,7 +108,7 @@ function App() {
       const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
       const languageName = lang || 'English';
 
-      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question. Please respond in ${languageName}.\n\nQuote: "${card.quote}"\nCategory: "${card.category}"\n\nMy question: "${question}"\n\nKeep the explanation concise, kind, and easy to understand.`;
+      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question. Please respond in ${languageName}.\n\nQuote: "${selectedCard.quote}"\nCategory: "${selectedCard.category}"\n\nMy question: "${userQuestion}"\n\nKeep the explanation concise, kind, and easy to understand.`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
@@ -137,10 +142,10 @@ function App() {
           <button onClick={() => changeLanguage('zh-TW')} className={i18n.language === 'zh-TW' ? 'active' : ''}>繁體中文</button>
         </div>
         <div className="how-it-works-switcher">
-          <button onClick={() => setShowHowAuraWorks(!showHowAuraWorks)} className={showHowAuraWorks ? 'active' : ''}>
+          <button onClick={() => { setShowHowAuraWorks(true); setShowHowToAsk(false); }} className={showHowAuraWorks ? 'active' : ''}>
             {t('how_aura_works')}
           </button>
-          <button onClick={() => setShowHowToAsk(!showHowToAsk)} className={showHowToAsk ? 'active' : ''}>
+          <button onClick={() => { setShowHowToAsk(true); setShowHowAuraWorks(false); }} className={showHowToAsk ? 'active' : ''}>
             {t('how_to_ask')}
           </button>
         </div>
