@@ -12,6 +12,12 @@ interface Quote {
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
+const quoteModules = {
+  en: () => import('./quotes.en.json'),
+  es: () => import('./quotes.es.json'),
+  'zh-TW': () => import('./quotes.zh-TW.json'),
+};
+
 function App() {
   const { t, i18n } = useTranslation();
   const [drawnCards, setDrawnCards] = useState<Quote[]>([]);
@@ -25,13 +31,28 @@ function App() {
 
   useEffect(() => {
     const loadQuotes = async () => {
-      const lang = i18n.language || 'en';
+      const lang = i18n.language;
+      let loadModule;
+
+      if (lang in quoteModules) {
+        loadModule = quoteModules[lang as keyof typeof quoteModules];
+      } else if (lang.includes('-')) {
+        const baseLang = lang.split('-')[0];
+        if (baseLang in quoteModules) {
+          loadModule = quoteModules[baseLang as keyof typeof quoteModules];
+        }
+      }
+
+      if (!loadModule) {
+        loadModule = quoteModules.en;
+      }
+
       try {
-        const quotesModule = await import(`./quotes.${lang}.json`);
+        const quotesModule = await loadModule();
         setQuotes(quotesModule.default);
       } catch (error) {
         console.error('Error loading quotes:', error);
-        const quotesModule = await import('./quotes.en.json');
+        const quotesModule = await quoteModules.en();
         setQuotes(quotesModule.default);
       }
     };
