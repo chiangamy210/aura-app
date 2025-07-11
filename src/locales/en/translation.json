@@ -1,0 +1,17 @@
+{
+  "translation": {
+    "title": "Aura",
+    "subtitle": "Think of a topic or an issue that you want to know...",
+    "countdown": "...{{count}}",
+    "draw_card": "Draw a Card",
+    "explain_more": "Explain More",
+    "start_over": "Draw Another Card",
+    "loading": "Getting your explanation...",
+    "ai_response_title": "An Insight for You",
+    "question_prompt": "What is your question about this card?",
+    "language_prompt": "In which language would you like the explanation? (e.g., English, Spanish, Traditional Chinese)",
+    "error_api_key": "Error: API Key not found. Please make sure you have set up your .env file with your VITE_GEMINI_API_KEY.",
+    "error_fetching": "Sorry, I had trouble getting an explanation.",
+    "error_details": "Error details: {{error}}"
+  }
+}

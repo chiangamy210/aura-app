@@ -1,0 +1,17 @@
+{
+  "translation": {
+    "title": "光環",
+    "subtitle": "想一想您想知道的主題或問題...",
+    "countdown": "...{{count}}",
+    "draw_card": "抽一張卡",
+    "explain_more": "更多解釋",
+    "start_over": "再抽一張",
+    "loading": "正在為您獲取解釋...",
+    "ai_response_title": "給您的一個洞見",
+    "question_prompt": "您對這張卡有什麼問題？",
+    "language_prompt": "您希望用哪種語言解釋？ (例如, English, Spanish, Traditional Chinese)",
+    "error_api_key": "錯誤：找不到 API 金鑰。請確保您已在 .env 檔案中設定了 VITE_GEMINI_API_KEY。",
+    "error_fetching": "抱歉，我無法取得解釋。",
+    "error_details": "錯誤詳細資訊：{{error}}"
+  }
+}

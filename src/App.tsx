@@ -1,9 +1,7 @@
-
-
 import ReactMarkdown from 'react-markdown';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import quotes from './quotes.json';
 import './App.css';
 
 interface Quote {
@@ -15,6 +13,7 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [drawnCards, setDrawnCards] = useState<Quote[]>([]);
   const [showButtons, setShowButtons] = useState(false);
   const [countdown, setCountdown] = useState(10);
@@ -22,9 +21,25 @@ function App() {
   const [userQuestion, setUserQuestion] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
 
   useEffect(() => {
-    document.title = 'Aura - Your Gentle Guide';
+    const loadQuotes = async () => {
+      const lang = i18n.language || 'en';
+      try {
+        const quotesModule = await import(`./quotes.${lang}.json`);
+        setQuotes(quotesModule.default);
+      } catch (error) {
+        console.error('Error loading quotes:', error);
+        const quotesModule = await import('./quotes.en.json');
+        setQuotes(quotesModule.default);
+      }
+    };
+    loadQuotes();
+  }, [i18n.language]);
+
+  useEffect(() => {
+    document.title = t('title') + ' - Your Gentle Guide';
     if (countdown > 0) {
       const timer = setTimeout(() => {
         setCountdown(countdown - 1);
@@ -33,7 +48,7 @@ function App() {
     } else {
       setShowButtons(true);
     }
-  }, [countdown]);
+  }, [countdown, t]);
 
   const drawCards = (num: number) => {
     const shuffled = quotes.sort(() => 0.5 - Math.random());
@@ -44,26 +59,28 @@ function App() {
 
   const handleExplainClick = (card: Quote) => {
     setSelectedCard(card);
-    const question = prompt('What is your question about this card?');
+    const question = prompt(t('question_prompt'));
     if (question) {
       setUserQuestion(question);
-      getExplanation(card, question);
+      getExplanation(card, question, i18n.language);
     }
   };
 
-  const getExplanation = async (card: Quote, question: string) => {
+  const getExplanation = async (card: Quote, question: string, lang: string | null) => {
     setIsLoading(true);
     setAiResponse('');
 
     if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
-      setAiResponse('Error: API Key not found. Please make sure you have set up your .env file with your VITE_GEMINI_API_KEY.');
+      setAiResponse(t('error_api_key'));
       setIsLoading(false);
       return;
     }
 
     try {
       const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
-      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question.\n\nQuote: "${card.quote}"\nCategory: "${card.category}"\n\nMy question: "${question}"\n\nKeep the explanation concise, kind, and easy to understand.`;
+      const languageName = lang || 'English';
+
+      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question. Please respond in ${languageName}.\n\nQuote: "${card.quote}"\nCategory: "${card.category}"\n\nMy question: "${question}"\n\nKeep the explanation concise, kind, and easy to understand.`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
@@ -74,7 +91,7 @@ function App() {
       if (error instanceof Error) {
         errorMessage = error.message;
       }
-      setAiResponse(`Sorry, I had trouble getting an explanation.\n\nError details: ${errorMessage}`);
+      setAiResponse(t('error_fetching') + '\n\n' + t('error_details', { error: errorMessage }));
     } finally {
       setIsLoading(false);
     }
@@ -84,18 +101,27 @@ function App() {
     window.location.reload();
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div className="app-container">
+      <div className="language-switcher">
+        <button onClick={() => changeLanguage('en')}>English</button>
+        <button onClick={() => changeLanguage('es')}>Español</button>
+        <button onClick={() => changeLanguage('zh-TW')}>繁體中文</button>
+      </div>
       <header className="app-header">
-        <h1>Aura</h1>
-        <p>Think of a topic or an issue that you want to know...</p>
-        {!showButtons && <p className="countdown">...{countdown}</p>}
+        <h1>{t('title')}</h1>
+        <p>{t('subtitle')}</p>
+        {!showButtons && <p className="countdown">{t('countdown', { count: countdown })}</p>}
       </header>
 
       {showButtons && drawnCards.length === 0 && (
         <div className="draw-button-container">
           <button className="btn btn-primary" onClick={() => drawCards(1)}>
-            Draw a Card
+            {t('draw_card')}
           </button>
         </div>
       )}
@@ -114,7 +140,7 @@ function App() {
                 className="btn btn-info btn-sm"
                 onClick={() => handleExplainClick(card)}
               >
-                Explain More
+                {t('explain_more')}
               </button>
             </div>
           </div>
@@ -124,7 +150,7 @@ function App() {
       {drawnCards.length > 0 && (
         <div className="start-over-container">
           <button className="btn btn-secondary" onClick={handleStartOver}>
-            Draw Another Card
+            {t('start_over')}
           </button>
         </div>
       )}
@@ -134,13 +160,13 @@ function App() {
           <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
-          <p>Getting your explanation...</p>
+          <p>{t('loading')}</p>
         </div>
       )}
 
       {aiResponse && (
         <section className="ai-response">
-          <h3>An Insight for You</h3>
+          <h3>{t('ai_response_title')}</h3>
           <ReactMarkdown>{aiResponse}</ReactMarkdown>
         </section>
       )}
