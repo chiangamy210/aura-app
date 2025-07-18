@@ -134,7 +134,6 @@ function Home() {
   return (
     <>
       <header className="app-header">
-        <h1>{t('title')}</h1>
         {drawnCards.length === 0 && <p>{t('subtitle')}</p>}
         {!showButtons && <p className="countdown">{t('countdown', { count: countdown })}</p>}
       </header>
@@ -207,10 +206,10 @@ function App() {
     <Router>
       <div className="app-container">
         <div className="top-bar">
+          <Link to="/" className="app-title-link">
+            <h1 className="app-title">{t('title')}</h1>
+          </Link>
           <div className="how-it-works-switcher">
-            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
-              {t('home')}
-            </NavLink>
             <NavLink to="/how-aura-works" className={({ isActive }) => isActive ? 'active' : ''}>
               {t('how_aura_works')}
             </NavLink>
