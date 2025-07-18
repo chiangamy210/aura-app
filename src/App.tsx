@@ -78,6 +78,8 @@ function App() {
     const selected = shuffled.slice(0, num);
     setDrawnCards(selected);
     setAiResponse('');
+    setShowHowAuraWorks(false);
+    setShowHowToAsk(false);
   };
 
   const handleExplainClick = (card: Quote) => {

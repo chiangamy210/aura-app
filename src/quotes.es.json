@@ -1,222 +1,210 @@
 [
   {
-    "category": "Esperanza y Sanación",
+    "title": "Llora y Reconstruye",
     "quote": "Tienes permitido llorar la vida que imaginaste, incluso mientras comienzas a construir algo nuevo, pieza por pieza imperfecta."
   },
   {
-    "category": "Esperanza y Sanación",
+    "title": "La Prueba de Tu Fuerza",
     "quote": "Incluso cuando te sientes entumecido o cansado, tu cuerpo sigue respirando, tu corazón sigue latiendo, una prueba innegable de que no te has rendido."
   },
   {
-    "category": "Esperanza y Sanación",
-    "quote": "Algo hermoso está creciendo silenciosamente dentro de ti."
+    "title": "Mira lo Lejos que Has Llegado",
+    "quote": "Mira hacia atrás a las montañas que ya has escalado. Esto es solo otra colina en tu viaje, y tienes la fuerza que ya has demostrado."
   },
   {
-    "category": "Esperanza y Sanación",
-    "quote": "Este momento no es el final de tu historia."
+    "title": "Un Momento de Movimiento",
+    "quote": "Mueve tu cuerpo durante cinco minutos para cambiar la historia que tu mente te está contando."
   },
   {
-    "category": "Esperanza y Sanación",
+    "title": "Un Momento de Paz",
     "quote": "Respira hondo. Bebe un vaso de agua. Siéntate. Susurra para ti mismo: 'No necesito arreglar todo en este momento'."
   },
   {
-    "category": "Esperanza y Sanación",
+    "title": "Estrellas en la Oscuridad",
     "quote": "Incluso la oscuridad tiene estrellas. Mira más de cerca."
   },
   {
-    "category": "Esperanza y Sanación",
-    "quote": "La sanación no es un camino recto. Algunos días llorarás por lo que pensabas que habías superado. Eso no significa que estés roto. Significa que todavía eres humano."
+    "title": "La Fuerza de las Raíces",
+    "quote": "Un árbol con raíces fuertes se ríe de la tormenta."
   },
   {
-    "category": "Esperanza y Sanación",
-    "quote": "Deja que el sol de la mañana te recuerde: incluso la noche más oscura termina. Y cuando lo hace, algo suave y cálido encontrará el camino de regreso a ti."
-  },
-  {
-    "category": "Esperanza y Sanación",
+    "title": "No te Rindas",
     "quote": "No te rindas antes de que ocurra la magia."
   },
   {
-    "category": "Esperanza y Sanación",
+    "title": "Un Nuevo Comienzo",
     "quote": "Tu historia no terminó con la parte difícil. Un capítulo se cerró. Otro, más tranquilo y tierno, está esperando para comenzar, cuando estés listo."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "No necesitas todas las respuestas, solo curiosidad y coraje."
+    "title": "El Lienzo de la Incertidumbre",
+    "quote": "La incertidumbre es un lienzo en blanco; sin líneas que seguir, todo es posible, y eres libre de pintar tu propia obra maestra."
   },
   {
-    "category": "Coraje y Acción",
+    "title": "Impulso Hacia Adelante",
     "quote": "Los pequeños pasos todavía te mueven hacia adelante."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "Incluso si es desordenado, sigue siendo progreso."
-  },
-  {
-    "category": "Coraje y Acción",
+    "title": "Libera Tu Dolor",
     "quote": "Escribe lo que te duele. Deja que la página sostenga tu dolor por un tiempo y rómpela, para que no tengas que cargarlo todo solo."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "Los sentimientos son visitantes. Déjalos ir y venir, solo siéntelos con honestidad, sin juzgar."
+    "title": "Mensajeros de la Verdad",
+    "quote": "Los sentimientos son mensajeros. Déjalos ir y venir, solo siéntelos con honestidad, sin juzgar, pregúntales amablemente qué verdad están tratando de mostrarte."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "Cuando nada es seguro, todo es posible."
+    "title": "El Terreno Fértil de la Confusión",
+    "quote": "La confusión es una señal de que estás dejando ir viejas creencias y algo nuevo está naciendo. Es el terreno fértil donde crece la nueva sabiduría."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "La confusión es una señal de que algo nuevo está naciendo."
+    "title": "Sé un Faro",
+    "quote": "Defiéndete; sé un faro contra las olas rompientes de la crítica, tu convicción un rayo inquebrantable que te guía a través de la tormenta."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "Tu corazón conoce el camino. Confía en él."
+    "title": "Siente Primero, Entiende Después",
+    "quote": "No necesitas deconstruir la partitura antes de dejar que una canción te conmueva. No todo necesita ser entendido antes de ser experimentado. Permítete sentir primero. El significado vendrá después."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "No todo necesita ser entendido antes de ser experimentado. Permítete sentir primero. El significado vendrá después."
+    "title": "La Llave de la Libertad",
+    "quote": "El perdón es desbloquear una jaula, solo para descubrir que eras tú quien estaba dentro."
   },
   {
-    "category": "Coraje y Acción",
-    "quote": "Hoy, haz una pequeña cosa solo para ti, no para ser productivo, no para ser fuerte, sino simplemente porque también mereces un cuidado suave."
-  },
-  {
-    "category": "Dejar Ir y Confiar",
+    "title": "El Ritmo del Universo",
     "quote": "Suelta el control. El universo tiene un ritmo."
   },
   {
-    "category": "Dejar Ir y Confiar",
+    "title": "La Fuerza en la Vulnerabilidad",
     "quote": "No te cierres para proteger tu orgullo. La vulnerabilidad es fuerza en su forma más cruda y sin editar."
   },
   {
-    "category": "Dejar Ir y Confiar",
-    "quote": "No estás atrasado. Estás en tu propio camino."
+    "title": "La Semilla de la Fuerza",
+    "quote": "Como una semilla, puedes sentirte enterrado en la oscuridad en este momento. Confía en este proceso, porque este es el terreno sagrado donde tu verdadera fuerza echa raíces."
   },
   {
-    "category": "Dejar Ir y Confiar",
-    "quote": "La niebla se disipará. Sigue caminando."
+    "title": "Peldaños Hacia el Éxito",
+    "quote": "Los errores son una prueba de que lo estás intentando, así que abrázalos no como signos de debilidad, sino como los peldaños que construyen tu éxito."
   },
   {
-    "category": "Dejar Ir y Confiar",
-    "quote": "Incluso perdido, sigues avanzando."
-  },
-  {
-    "category": "Dejar Ir y Confiar",
-    "quote": "Los errores son una prueba de que lo estás intentando."
-  },
-  {
-    "category": "Dejar Ir y Confiar",
-    "quote": "Tienes permitido empezar de nuevo, tantas veces como necesites."
-  },
-  {
-    "category": "Dejar Ir y Confiar",
+    "title": "Suaviza y Abre",
     "quote": "Intenta relajar los hombros. Desaprieta la mandíbula. Deja que tu cuerpo sea lo primero en abrirse, la mente lo seguirá."
   },
   {
-    "category": "Dejar Ir y Confiar",
-    "quote": "El crecimiento a menudo se siente como romperse. Pero en realidad se está expandiendo."
+    "title": "La Belleza de Romperse",
+    "quote": "El crecimiento a menudo se siente como romperse, pero en realidad se está expandiendo; como una mariposa, debes romper la crisálida no para ser destruido, sino para finalmente extender tus alas."
   },
   {
-    "category": "Dejar Ir y Confiar",
-    "quote": "Confía en el ritmo de tu vida."
+    "title": "Nutre Tu Propio Jardín",
+    "quote": "Antes de admirar las flores en un jardín lejano, primero aprende a nutrir las semillas que ya están esperando para florecer en tu propio suelo."
   },
   {
-    "category": "Autocompasión y Descanso",
+    "title": "La Importancia del Descanso",
     "quote": "Tienes permitido hacer una pausa. El descanso es parte del viaje."
   },
   {
-    "category": "Autocompasión y Descanso",
-    "quote": "No eres una máquina. Tienes permitido descansar."
+    "title": "Construye una Balsa",
+    "quote": "El río del cambio sigue fluyendo; aprende a construir una balsa."
   },
   {
-    "category": "Autocompasión y Descanso",
-    "quote": "Respira. El momento solo te pide que estés presente."
+    "title": "Curiosidad Sobre Miedo",
+    "quote": "Deja que la curiosidad guíe en lugar del miedo. Pregunta: '¿Qué podría ser posible si no me escondo de esto?'"
   },
   {
-    "category": "Autocompasión y Descanso",
-    "quote": "Deja que la curiosidad guíe en lugar del miedo. Pregunta: '¿Qué podr��a ser posible si no me escondo de esto?'"
-  },
-  {
-    "category": "Autocompasión y Descanso",
+    "title": "Amabilidad para Ti Mismo",
     "quote": "Date a ti mismo la misma amabilidad que le das a los demás."
   },
   {
-    "category": "Autocompasión y Descanso",
-    "quote": "Deja de ensayar los peores escenarios. Ahora estás a salvo. Deja que tu sistema nervioso se ponga al día con la verdad."
-  },
-  {
-    "category": "Autocompasión y Descanso",
+    "title": "El Fin de la Expectativa",
     "quote": "La paz comienza cuando termina la expectativa."
   },
   {
-    "category": "Autocompasión y Descanso",
-    "quote": "Tu valor no está ligado a tu productividad."
+    "title": "Tu Valor Inmutable",
+    "quote": "Tu valor no se basa en tu claridad o progreso. Eres como una montaña, entero y digno, ya sea bajo un sol brillante o cubierto de nubes."
   },
   {
-    "category": "Autocompasión y Descanso",
-    "quote": "Tienes permitido sanar. No hay prisa."
-  },
-  {
-    "category": "Autocompasión y Descanso",
+    "title": "Encuentra Tu Lugar Suave",
     "quote": "Observa lo que te suaviza. Una persona. Un lugar. Una canción. Pasa más tiempo allí."
   },
   {
-    "category": "Claridad y Conocimiento Interior",
-    "quote": "A veces la respuesta llega en la quietud."
+    "title": "Una Simple Sonrisa",
+    "quote": "Sonríe, incluso si se siente forzado; la señal de tu cuerpo puede persuadir suavemente a tu mente para que se levante."
   },
   {
-    "category": "Claridad y Conocimiento Interior",
-    "quote": "No tienes que tener todo resuelto para seguir adelante."
-  },
-  {
-    "category": "Claridad y Conocimiento Interior",
-    "quote": "Di una cosa hoy que se sienta honesta, incluso si te tiembla la voz. Así es como comienza la apertura."
-  },
-  {
-    "category": "Claridad y Conocimiento Interior",
+    "title": "Libertad en la Apertura",
     "quote": "Tu apertura no siempre será recibida perfectamente. Ofrécela de todos modos. No lo haces por su reacción, lo haces por tu libertad."
   },
   {
-    "category": "Claridad y Conocimiento Interior",
-    "quote": "Estás aprendiendo, y eso es valiente."
-  },
-  {
-    "category": "Claridad y Conocimiento Interior",
+    "title": "Tu Luz Interior",
     "quote": "Eres luz, incluso cuando no te sientes así."
   },
   {
-    "category": "Claridad y Conocimiento Interior",
-    "quote": "Toma un riesgo emocional hoy, uno suave. Di lo que piensas. Da el primer paso. Pide ayuda."
+    "title": "Un Recordatorio Amable",
+    "quote": "Recuerda que morirás."
   },
   {
-    "category": "Claridad y Conocimiento Interior",
+    "title": "Inhala Coraje, Exhala Duda",
     "quote": "Inhala coraje. Exhala duda."
   },
   {
-    "category": "Claridad y Conocimiento Interior",
+    "title": "Real Sobre Pulido",
     "quote": "Deja de actuar. Empieza a revelarte. El mundo responde más a tu autenticidad que a tu pulcritud."
   },
   {
-    "category": "Abundancia",
+    "title": "Abierto a la Abundancia",
     "quote": "Abre las manos, físicamente. Siente lo que es dejar de apretar. Así es como entra la abundancia: no por la fuerza, sino por la preparación."
   },
   {
-    "category": "Abundancia",
+    "title": "El Arte de Recibir",
     "quote": "Celebra cada vez que recibes: un cumplido, un regalo, una sonrisa. Practica recibir sin desviar. Así es como aumentas tu capacidad para más."
   },
   {
-    "category": "Abundancia",
+    "title": "Tu Energía es Tu Riqueza",
     "quote": "Di no a lo que te agota, incluso si paga. La abundancia es saber que tu energía es tan valiosa como tu tiempo."
   },
   {
-    "category": "Abundancia",
+    "title": "Haz Espacio para Más",
     "quote": "Ordena un rincón de tu espacio. La abundancia fluye donde hay espacio: mental, emocional, físicamente."
   },
   {
-    "category": "Abundancia",
+    "title": "Tu Tiempo es Precioso",
     "quote": "Tu tiempo es una moneda. Gástalo como el dinero: sabiamente, con amor, con límites claros. No puedes servir de una taza vacía."
   },
   {
-    "category": "Abundancia",
-    "quote": "Haz un seguimiento de lo que ya tienes. La abundancia comienza con la conciencia. Enumera cada bendición, sin importar cuán pequeña sea. Cuéntalas hasta que el guion de la escasez se desvanezca."
+    "title": "Semillas del Mañana",
+    "quote": "El jardín del mañana se planta con las semillas de hoy."
+  },
+  {
+    "title": "El Poder de la Presencia",
+    "quote": "Lleva tu conciencia a una sola sensación, el calor de tu taza, el sonido de un pájaro, y encuentra tu centro estable en esta simple verdad. El momento solo te pide que estés presente."
+  },
+  {
+    "title": "Surfea la Ola",
+    "quote": "En lugar de luchar contra la ola abrumadora, aprende a surfearla. Reconoce su poder, luego guíate con calma de regreso a la tranquila orilla de tu aliento."
+  },
+  {
+    "title": "Escucha a Tu Corazón",
+    "quote": "Cuando tu mente dé vueltas con preguntas, dirige suavemente tu atención a tu corazón. No le pidas respuestas, sino lo que realmente necesita en este momento. A veces la respuesta llega en la quietud."
+  },
+  {
+    "title": "La Ventana Abierta",
+    "quote": "Deja de sacudir la puerta cerrada. Hay una ventana abierta cerca."
+  },
+  {
+    "title": "La Llama Constante",
+    "quote": "A veces, la valentía es la llama constante de una vela, no la explosión que ilumina el cielo. Se trata de proporcionar una luz constante y silenciosa en la oscuridad, no un destello momentáneo."
+  },
+  {
+    "title": "Lleva el Miedo Contigo",
+    "quote": "No esperes a que el miedo desaparezca antes de actuar. Llévalo contigo, como un pasajero nervioso, mientras conduces valientemente hacia tu destino."
+  },
+  {
+    "title": "Tu Propia Brújula Interior",
+    "quote": "Tu confusión puede ser una señal de que estás viviendo según el mapa de otra persona. Déjalo, quédate en silencio y escucha tu propia brújula interior."
+  },
+  {
+    "title": "La Alegría de Perderse",
+    "quote": "No tengas miedo de perderte, porque a menudo es en los desvíos donde descubres el camino que realmente estaba destinado para ti todo el tiempo."
+  },
+  {
+    "title": "Listo para Aprender",
+    "quote": "Una taza vacía es la única que se puede llenar. Prepárate para aprender."
   }
 ]
