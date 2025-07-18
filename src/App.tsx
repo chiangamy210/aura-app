@@ -31,9 +31,11 @@ const quoteModules = {
 
 function Home() {
   const { t, i18n } = useTranslation();
-  const [drawnCards, setDrawnCards] = useState<Quote[]>([]);
+  const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
   const [countdown, setCountdown] = useState(10);
+  const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
+  const [userQuestion, setUserQuestion] = useState('');
   
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +72,7 @@ function Home() {
   }, [i18n.language]);
 
   useEffect(() => {
-    document.title = t("title") + " - Your Gentle Guide";
+    document.title = t('title') + ' - Your Gentle Guide';
     if (countdown > 0) {
       const timer = setTimeout(() => {
         setCountdown(countdown - 1);
@@ -81,23 +83,30 @@ function Home() {
     }
   }, [countdown, t]);
 
+  useEffect(() => {
+    if (selectedCard && userQuestion) {
+      getExplanation(i18n.language);
+    }
+  }, [i18n.language, selectedCard, userQuestion]);
+
   const drawCards = (num: number) => {
-    const shuffled = quotes.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, num);
-    setDrawnCards(selected);
+    const shuffledIndices = Array.from(quotes.keys()).sort(() => 0.5 - Math.random());
+    const selectedIndices = shuffledIndices.slice(0, num);
+    setDrawnCardIndices(selectedIndices);
     setAiResponse("");
   };
 
   const handleExplainClick = (card: Quote) => {
+    setSelectedCard(card);
     const question = prompt(t('question_prompt'));
     if (question) {
-      getExplanation(card, question, i18n.language);
+      setUserQuestion(question);
     }
   };
 
-  const getExplanation = async (card: Quote, question: string, lang: string | null) => {
-    if (!card || !question) {
-      console.error('card or question is null');
+  const getExplanation = async (lang: string | null) => {
+    if (!selectedCard || !userQuestion) {
+      console.error('selectedCard or userQuestion is null');
       setIsLoading(false);
       return;
     }
@@ -122,11 +131,11 @@ Your response must be professional, warm, insightful, and helpful. You are not a
 
 User and Card Information:
 
-User's Question: "${question}"
+User's Question: "${userQuestion}"
 
-Card Drawn: "${card.title}"
+Card Drawn: "${selectedCard.title}"
 
-Card's Visual Description: "${card.quote}" (Note: Using the quote as a placeholder for visual description since actual image descriptions are not available.)
+Card's Visual Description: "${selectedCard.quote}" (Note: Using the quote as a placeholder for visual description since actual image descriptions are not available.)
 
 Your Response Must Follow This Exact Structure, without explicitly stating the section titles (e.g., do not write "Introduce the Card:"):
 
@@ -175,13 +184,13 @@ DO keep the response concise and focused, around 20-55 sentences in total.`;
   return (
     <>
       <header className="app-header">
-        {drawnCards.length === 0 && <p>{t("subtitle")}</p>}
+        {drawnCardIndices.length === 0 && <p>{t("subtitle")}</p>}
         {!showButtons && (
           <p className="countdown">{t("countdown", { count: countdown })}</p>
         )}
       </header>
 
-      {showButtons && drawnCards.length === 0 && (
+      {showButtons && drawnCardIndices.length === 0 && (
         <div className="draw-button-container">
           <button className="btn btn-primary" onClick={() => drawCards(1)}>
             {t("draw_card")}
@@ -190,28 +199,32 @@ DO keep the response concise and focused, around 20-55 sentences in total.`;
       )}
 
       <main className="card-container">
-        {drawnCards.map((card, index) => (
-          <div
-            className="card card-reveal"
-            key={index}
-            style={{ animationDelay: `${index * 0.5}s` }}
-          >
-            <img src={card.image} className="card-img-top" alt={card.title} />
-            <div className="card-body">
-              <h5 className="card-title">{card.title}</h5>
-              <p className="card-text">{card.quote}</p>
-              <button
-                className="btn btn-info btn-sm"
-                onClick={() => handleExplainClick(card)}
-              >
-                {t("explain_more")}
-              </button>
+        {drawnCardIndices.map((cardIndex, index) => {
+          const card = quotes[cardIndex];
+          if (!card) return null; // Handle case where card might not be found (e.g., quotes not loaded yet)
+          return (
+            <div
+              className="card card-reveal"
+              key={index}
+              style={{ animationDelay: `${index * 0.5}s` }}
+            >
+              <img src={card.image} className="card-img-top" alt={card.title} />
+              <div className="card-body">
+                <h5 className="card-title">{card.title}</h5>
+                <p className="card-text">{card.quote}</p>
+                <button
+                  className="btn btn-info btn-sm"
+                  onClick={() => handleExplainClick(card)}
+                >
+                  {t("explain_more")}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </main>
 
-      {drawnCards.length > 0 && (
+      {drawnCardIndices.length > 0 && (
         <div className="start-over-container">
           <button className="btn btn-secondary" onClick={handleStartOver}>
             {t("start_over")}
