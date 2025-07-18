@@ -155,7 +155,7 @@ function App() {
       </div>
       <header className="app-header">
         <h1>{t('title')}</h1>
-        <p>{t('subtitle')}</p>
+        {drawnCards.length === 0 && <p>{t('subtitle')}</p>}
         {!showButtons && <p className="countdown">{t('countdown', { count: countdown })}</p>}
       </header>
 
