@@ -2,6 +2,9 @@ import ReactMarkdown from 'react-markdown';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
+import HowAuraWorks from './HowAuraWorks';
+import HowToAsk from './HowToAsk';
 import './App.css';
 
 interface Quote {
@@ -19,7 +22,7 @@ const quoteModules = {
   'zh-TW': () => import('./quotes.zh-TW.json'),
 };
 
-function App() {
+function Home() {
   const { t, i18n } = useTranslation();
   const [drawnCards, setDrawnCards] = useState<Quote[]>([]);
   const [showButtons, setShowButtons] = useState(false);
@@ -29,8 +32,6 @@ function App() {
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [quotes, setQuotes] = useState<Quote[]>([]);
-  const [showHowAuraWorks, setShowHowAuraWorks] = useState(false);
-  const [showHowToAsk, setShowHowToAsk] = useState(false);
 
   useEffect(() => {
     const loadQuotes = async () => {
@@ -79,8 +80,6 @@ function App() {
     const selected = shuffled.slice(0, num);
     setDrawnCards(selected);
     setAiResponse('');
-    setShowHowAuraWorks(false);
-    setShowHowToAsk(false);
   };
 
   const handleExplainClick = (card: Quote) => {
@@ -132,27 +131,8 @@ function App() {
     window.location.reload();
   };
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
-
   return (
-    <div className="app-container">
-      <div className="top-bar">
-        <div className="language-switcher">
-          <button onClick={() => changeLanguage('en')} className={i18n.language === 'en' ? 'active' : ''}>English</button>
-          <button onClick={() => changeLanguage('es')} className={i18n.language === 'es' ? 'active' : ''}>Español</button>
-          <button onClick={() => changeLanguage('zh-TW')} className={i18n.language === 'zh-TW' ? 'active' : ''}>繁體中文</button>
-        </div>
-        <div className="how-it-works-switcher">
-          <button onClick={() => { setShowHowAuraWorks(true); setShowHowToAsk(false); }} className={showHowAuraWorks ? 'active' : ''}>
-            {t('how_aura_works')}
-          </button>
-          <button onClick={() => { setShowHowToAsk(true); setShowHowAuraWorks(false); }} className={showHowToAsk ? 'active' : ''}>
-            {t('how_to_ask')}
-          </button>
-        </div>
-      </div>
+    <>
       <header className="app-header">
         <h1>{t('title')}</h1>
         {drawnCards.length === 0 && <p>{t('subtitle')}</p>}
@@ -212,46 +192,50 @@ function App() {
           <ReactMarkdown>{aiResponse}</ReactMarkdown>
         </section>
       )}
+    </>
+  );
+}
 
-      {showHowAuraWorks && (
-        <section className="how-aura-works">
-          <h2>{t('how_aura_works_title')}</h2>
-          <p>{t('how_aura_works_intro')}</p>
-          <p>{t('how_aura_works_quantum_intro')}</p>
-          <h4>{t('how_aura_works_observer_effect_title')}</h4>
-          <p>{t('how_aura_works_observer_effect_text')}</p>
-          <h4>{t('how_aura_works_entanglement_title')}</h4>
-          <p>{t('how_aura_works_entanglement_text')}</p>
-          <p>{t('how_aura_works_conclusion')}</p>
-        </section>
-      )}
+function App() {
+  const { i18n, t } = useTranslation();
 
-      {showHowToAsk && (
-        <section className="how-to-ask">
-          <h2>{t('how_to_ask_title')}</h2>
-          <p>{t('how_to_ask_intro')}</p>
-          <h4>{t('how_to_ask_step1_title')}</h4>
-          <p>{t('how_to_ask_step1_text')}</p>
-          <h4>{t('how_to_ask_step2_title')}</h4>
-          <p>{t('how_to_ask_step2_text')}</p>
-          <h4>{t('how_to_ask_step3_title')}</h4>
-          <p>{t('how_to_ask_step3_text')}</p>
-          <h4>{t('how_to_ask_step4_title')}</h4>
-          <p>{t('how_to_ask_step4_text')}</p>
-          <h4>{t('how_to_ask_examples_title')}</h4>
-          <p>{t('how_to_ask_examples_intro')}</p>
-          <ul>
-            <li>{t('how_to_ask_example1')}</li>
-            <li>{t('how_to_ask_example2')}</li>
-            <li>{t('how_to_ask_example3')}</li>
-          </ul>
-        </section>
-      )}
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
-      <footer className="app-footer">
-        <p>{t('footer_text')}</p>
-      </footer>
-    </div>
+  return (
+    <Router>
+      <div className="app-container">
+        <div className="top-bar">
+          <div className="how-it-works-switcher">
+            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
+              {t('home')}
+            </NavLink>
+            <NavLink to="/how-aura-works" className={({ isActive }) => isActive ? 'active' : ''}>
+              {t('how_aura_works')}
+            </NavLink>
+            <NavLink to="/how-to-ask" className={({ isActive }) => isActive ? 'active' : ''}>
+              {t('how_to_ask')}
+            </NavLink>
+          </div>
+          <div className="language-switcher">
+            <button onClick={() => changeLanguage('en')} className={i18n.language === 'en' ? 'active' : ''}>English</button>
+            <button onClick={() => changeLanguage('es')} className={i18n.language === 'es' ? 'active' : ''}>Español</button>
+            <button onClick={() => changeLanguage('zh-TW')} className={i18n.language === 'zh-TW' ? 'active' : ''}>繁體中文</button>
+          </div>
+        </div>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/how-aura-works" element={<HowAuraWorks />} />
+          <Route path="/how-to-ask" element={<HowToAsk />} />
+        </Routes>
+
+        <footer className="app-footer">
+          <p>{t('footer_text')}</p>
+        </footer>
+      </div>
+    </Router>
   );
 }
 

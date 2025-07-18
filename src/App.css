@@ -43,62 +43,22 @@ body, html {
   position: relative;
 }
 
-.language-switcher {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.language-switcher button {
-  background: transparent;
-  border: 1px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 0.3rem 0.6rem;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: all 0.3s ease;
-}
-
-.language-switcher button:hover,
-.language-switcher button.active {
-  background: var(--primary-color);
-  color: white;
-}
-
 .top-bar {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  right: 1rem;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  justify-content: center;
   align-items: center;
+  gap: 1rem; /* Space between language and main nav */
+  padding: 1rem 0;
+  margin-bottom: 2rem; /* Space below the navigation bar */
 }
 
 .language-switcher {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-}
-
-.how-it-works-switcher button {
-  background: linear-gradient(to right, #ffffff, #fdf6f0);
-  border: 1px solid var(--primary-color);
-  color: var(--text-color);
-  padding: 0.75rem 1.25rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  margin-left: auto; /* Push to the right */
 }
 
 .language-switcher button {
@@ -118,7 +78,6 @@ body, html {
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-.how-it-works-switcher button:hover,
 .language-switcher button:hover {
   background: linear-gradient(to right, var(--primary-color), var(--accent-color));
   color: white;
@@ -126,7 +85,6 @@ body, html {
   box-shadow: 0 4px 10px rgba(247, 163, 153, 0.4);
 }
 
-.how-it-works-switcher button.active,
 .language-switcher button.active {
   background: linear-gradient(to right, var(--accent-color), #f8b4ab);
   color: white;
@@ -135,11 +93,49 @@ body, html {
   transform: translateY(-2px);
 }
 
+.how-it-works-switcher {
+  display: flex;
+  gap: 0.75rem; /* Space between navigation links */
+  align-items: center;
+  margin-right: auto; /* Push to the left */
+}
 
+.how-it-works-switcher a {
+  background: linear-gradient(to right, #ffffff, #fdf6f0);
+  border: 1px solid var(--primary-color);
+  color: var(--text-color);
+  padding: 0.75rem 1.25rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  text-decoration: none;
+}
+
+.how-it-works-switcher a:hover {
+  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(247, 163, 153, 0.4);
+}
+
+.how-it-works-switcher a.active {
+  background: linear-gradient(to right, var(--accent-color), #f8b4ab);
+  color: white;
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 10px rgba(247, 163, 153, 0.6);
+  transform: translateY(-2px);
+}
 
 .app-header {
   text-align: center;
-  margin-top: 6rem; /* Add margin to avoid overlap with switcher */
+  margin-top: 2rem; /* Adjusted margin-top */
 }
 
 h1 {
