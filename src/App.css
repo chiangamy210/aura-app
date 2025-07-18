@@ -225,40 +225,43 @@ h1 {
 .card {
   background-color: var(--card-bg);
   border: 1px solid #f0e9e4;
-  border-radius: 15px;
-  padding: 2.5rem;
-  box-shadow: 0 8px 25px var(--shadow-color);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px var(--shadow-color);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   text-align: center;
   width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.card-reveal {
-  animation: reveal 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  opacity: 0;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
 }
 
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card-img-top {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
 .card-title {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
-  color: var(--primary-color);
+  font-size: 1.5rem;
+  color: var(--accent-color);
   margin: 0 0 1rem 0;
 }
 
 .card-text {
-  font-size: 1.2rem;
-  line-height: 1.7;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  line-height: 1.8;
   color: var(--text-color);
   margin: 0 0 1.5rem 0;
 }

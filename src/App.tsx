@@ -5,8 +5,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import './App.css';
 
 interface Quote {
-  category: string;
+  title: string;
   quote: string;
+  image: string;
 }
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -110,7 +111,7 @@ function App() {
       const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
       const languageName = lang || 'English';
 
-      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question. Please respond in ${languageName}.\n\nQuote: "${selectedCard.quote}"\nCategory: "${selectedCard.category}"\n\nMy question: "${userQuestion}"\n\nKeep the explanation concise, kind, and easy to understand.`;
+      const prompt = `Explain the following quote in a warm, gentle, and insightful way, in the context of my question. Please respond in ${languageName}.\n\nQuote: "${selectedCard.quote}"\n\nMy question: "${userQuestion}"\n\nKeep the explanation concise, kind, and easy to understand.`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
@@ -173,8 +174,9 @@ function App() {
             key={index}
             style={{ animationDelay: `${index * 0.5}s` }}
           >
+            <img src={card.image} className="card-img-top" alt={card.title} />
             <div className="card-body">
-              <h5 className="card-title">{card.category}</h5>
+              <h5 className="card-title">{card.title}</h5>
               <p className="card-text">{card.quote}</p>
               <button
                 className="btn btn-info btn-sm"
