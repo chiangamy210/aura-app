@@ -1,4 +1,3 @@
-
 :root {
   --primary-color: #f3d2c1;
   --secondary-color: #c3e0e5;
@@ -7,22 +6,40 @@
   --bg-color: #fdf6f0;
   --card-bg: #ffffff;
   --shadow-color: rgba(92, 92, 92, 0.1);
-  --font-serif: 'Noto Serif TC', 'Playfair Display', serif;
-  --font-sans: 'Noto Sans TC', 'Georgia', serif;
+  --font-serif: "Noto Serif TC", "Playfair Display", serif;
+  --font-sans: "Noto Sans TC", "Georgia", serif;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body, html {
+@keyframes background-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body,
+html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   font-family: var(--font-sans);
-  background-color: var(--bg-color);
+  background: linear-gradient(-45deg, #fdf6f0, #e9e4f0, #f3d2c1, #c3e0e5);
+  background-size: 400% 400%;
+  animation: background-pan 15s ease-in-out infinite;
   color: var(--text-color);
+  overflow-x: hidden;
 }
 
 #root {
@@ -35,23 +52,25 @@ body, html {
 
 .app-container {
   width: 100%;
-  max-width: 650px;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  justify-content: space-between; /* Distribute space */
+  gap: 1rem; /* Reduced gap */
   position: relative;
+  min-height: 90vh; /* Ensure it takes up most of the screen */
 }
 
 .top-bar {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Distribute items with space between */
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   padding: 1rem 0;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem; /* Reduced margin */
 }
 
 .app-title {
@@ -89,11 +108,15 @@ body, html {
   align-items: center;
   justify-content: center;
   min-height: 30px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .language-switcher button:hover {
-  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--accent-color)
+  );
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(247, 163, 153, 0.4);
@@ -132,7 +155,7 @@ body, html {
 }
 
 .how-it-works-switcher a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -167,33 +190,30 @@ body, html {
 
 .app-header {
   text-align: center;
-  margin-top: 0; /* Removed margin-top as title is moved */
+  margin-bottom: 1rem; /* Reduced margin */
 }
-
-/* Removed h1 styling as it's now handled by .app-title */
-/*
-h1 {
-  font-family: var(--font-serif);
-  color: var(--accent-color);
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-}
-*/
 
 .app-header p {
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1.2rem; /* Increase font size */
+  line-height: 1.7;
   margin: 0;
+  opacity: 0.8;
+  transition: opacity 0.5s ease-out;
+}
+
+.app-header p.hidden {
+  opacity: 0;
 }
 
 .countdown {
   font-size: 1.2rem;
   color: var(--accent-color);
   margin-top: 1rem;
+  font-weight: 500;
 }
 
-.draw-button-container, .start-over-container {
+.draw-button-container,
+.start-over-container {
   margin-bottom: 1rem;
 }
 
@@ -250,7 +270,83 @@ h1 {
 .card-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  flex-grow: 1; /* Allow this to take up available space */
+  perspective: 1800px;
+  position: relative;
+}
+
+.card-fan {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.card-fan.visible {
+  opacity: 1;
+}
+
+.card-fan .card {
+  position: absolute;
+  bottom: 0;
+  width: 160px;
+  height: 224px; /* Maintain aspect ratio */
+  transform-origin: bottom center;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  border-radius: 15px; /* Softer radius */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 0;
+}
+
+.card-fan .card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card.selected {
+  animation: fly-out 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+}
+
+@keyframes fly-out {
+  0% {
+    transform: rotate(var(--start-rotate)) translateY(-20px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(calc(var(--start-rotate) + 20deg)) translateY(-100vh)
+      scale(0.4);
+    opacity: 0;
+  }
+}
+
+.card.revealed {
+  position: relative;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  animation: fadeIn 2s ease-out;
+  width: 100%;
+  max-width: 450px; /* Larger revealed card */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .card {
@@ -270,7 +366,7 @@ h1 {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
 }
 
 .card-img-top {
@@ -279,7 +375,7 @@ h1 {
   height: auto;
   border-radius: 15px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card-title {
@@ -305,7 +401,7 @@ h1 {
   width: 3rem;
   height: 3rem;
   color: var(--accent-color);
-  border-width: .2em;
+  border-width: 0.2em;
 }
 
 .ai-response {
@@ -326,7 +422,9 @@ h1 {
   text-align: center;
 }
 
-.ai-response p, .ai-response ul, .ai-response ol {
+.ai-response p,
+.ai-response ul,
+.ai-response ol {
   line-height: 1.8;
 }
 
@@ -390,4 +488,3 @@ h1 {
   font-size: 0.9rem;
   color: var(--text-color);
 }
-

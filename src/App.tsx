@@ -36,10 +36,18 @@ function Home() {
   const [countdown, setCountdown] = useState(10);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
   const [userQuestion, setUserQuestion] = useState('');
-  
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [revealedCard, setRevealedCard] = useState<number | null>(null);
+  const [selectedFanCard, setSelectedFanCard] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  const [showSubtitle, setShowSubtitle] = useState(true);
+
+  // Define the number of cards to display in the fan
+  const fanCardsCount = 53;
+  const [fanCardIndices, setFanCardIndices] = useState<number[]>([]);
 
   useEffect(() => {
     const loadQuotes = async () => {
@@ -62,6 +70,9 @@ function Home() {
       try {
         const quotesModule = await loadModule();
         setQuotes(quotesModule.default);
+        // Set up the initial fan of cards
+        const shuffledIndices = Array.from(quotesModule.default.keys()).sort(() => 0.5 - Math.random());
+        setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
       } catch (error) {
         console.error("Error loading quotes:", error);
         const quotesModule = await quoteModules.en();
@@ -70,6 +81,16 @@ function Home() {
     };
     loadQuotes();
   }, [i18n.language]);
+
+  const [fanVisible, setFanVisible] = useState(false);
+
+  useEffect(() => {
+    if (showButtons) {
+      // Use a timeout to allow the component to mount before adding the visible class
+      const timer = setTimeout(() => setFanVisible(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [showButtons]);
 
   useEffect(() => {
     document.title = t('title') + ' - Your Gentle Guide';
@@ -80,6 +101,7 @@ function Home() {
       return () => clearTimeout(timer);
     } else {
       setShowButtons(true);
+      setShowSubtitle(false); // Hide subtitle when countdown finishes
     }
   }, [countdown, t]);
 
@@ -89,11 +111,15 @@ function Home() {
     }
   }, [i18n.language, selectedCard, userQuestion]);
 
-  const drawCards = (num: number) => {
-    const shuffledIndices = Array.from(quotes.keys()).sort(() => 0.5 - Math.random());
-    const selectedIndices = shuffledIndices.slice(0, num);
-    setDrawnCardIndices(selectedIndices);
+  const handleCardSelect = (cardIndex: number) => {
+    setSelectedFanCard(cardIndex);
     setAiResponse("");
+    
+    // Animate out the selected card
+    setTimeout(() => {
+      setDrawnCardIndices([cardIndex]);
+      setRevealedCard(cardIndex);
+    }, 1000); // Match animation duration
   };
 
   const handleExplainClick = (card: Quote) => {
@@ -125,38 +151,7 @@ function Home() {
       });
       const languageName = lang || "English";
 
-      const prompt = `Your response MUST be in ${languageName}. You are "Aura," a warm, wise, and insightful digital guide. Your purpose is to help a user who has come to you feeling confused, upset, or seeking clarity. They have just drawn a card from a symbolic deck and have asked a question.
-
-Your response must be professional, warm, insightful, and helpful. You are not a fortune teller who predicts the future. You are a gentle guide who uses the symbolism of the card to offer perspective, encourage reflection, and empower the user to find their own answers.
-
-User and Card Information:
-
-User's Question: "${userQuestion}"
-
-Card Drawn: "${selectedCard.title}"
-
-Card's Visual Description: "${selectedCard.quote}" (Note: Using the quote as a placeholder for visual description since actual image descriptions are not available.)
-
-Your Response Must Follow This Exact Structure, without explicitly stating the section titles (e.g., do not write "Introduce the Card:"):
-
-1.  Begin by warmly and empathetically acknowledging the user's situation without being specific. Use phrases like "Thank you for sharing what's on your mind," or "It's brave to seek clarity when things feel uncertain."
-2.  State the name of the card they have drawn.
-3.  Interpret the card's meaning using its message. Connect the quote to abstract concepts.
-4.  Gently bridge the card's message to the user's specific question. Frame it as an invitation to see their situation from a new perspective.
-5.  Provide a reflective question or a small, gentle action for the user to ponder or take. This should empower them.
-6.  End with a short, warm, and empowering statement.
-
-Crucial Rules to Follow:
-
-DO NOT predict the future. Never say "you will" or "this is going to happen."
-
-DO NOT give direct advice (e.g., "You should break up with him," "You should quit your job").
-
-DO NOT provide medical, legal, or financial advice.
-
-DO maintain a warm, professional, and almost poetic tone.
-
-DO keep the response concise and focused, around 20-55 sentences in total.`;
+      const prompt = `Your response MUST be in ${languageName}. You are "Aura," a warm, wise, and insightful digital guide. Your purpose is to help a user who has come to you feeling confused, upset, or seeking clarity. They have just drawn a card from a symbolic deck and have asked a question.\n\nYour response must be professional, warm, insightful, and helpful. You are not a fortune teller who predicts the future. You are a gentle guide who uses the symbolism of the card to offer perspective, encourage reflection, and empower the user to find their own answers.\n\nUser and Card Information:\n\nUser's Question: "${userQuestion}"\n\nCard Drawn: "${selectedCard.title}"\n\nCard's Visual Description: "${selectedCard.quote}" (Note: Using the quote as a placeholder for visual description since actual image descriptions are not available.)\n\nYour Response Must Follow This Exact Structure, without explicitly stating the section titles (e.g., do not write "Introduce the Card:"):\n\n1.  Begin by warmly and empathetically acknowledging the user's situation without being specific. Use phrases like "Thank you for sharing what's on your mind," or "It's brave to seek clarity when things feel uncertain."\n2.  State the name of the card they have drawn.\n3.  Interpret the card's meaning using its message. Connect the quote to abstract concepts.\n4.  Gently bridge the card's message to the user's specific question. Frame it as an invitation to see their situation from a new perspective.\n5.  Provide a reflective question or a small, gentle action for the user to ponder or take. This should empower them.\n6.  End with a short, warm, and empowering statement.\n\nCrucial Rules to Follow:\n\nDO NOT predict the future. Never say "you will" or "this is going to happen."\n\nDO NOT give direct advice (e.g., "You should break up with him," "You should quit your job").\n\nDO NOT provide medical, legal, or financial advice.\n\nDO maintain a warm, professional, and almost poetic tone.\n\nDO keep the response concise and focused, around 20-55 sentences in total.`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
@@ -181,50 +176,82 @@ DO keep the response concise and focused, around 20-55 sentences in total.`;
     window.location.reload();
   };
 
+  const getCardFanStyles = (index: number, cardIndex: number) => {
+    const cardsCount = fanCardIndices.length;
+    const rotationAngle = (index - Math.floor(cardsCount / 2)) * 4;
+    let transform = `rotate(${rotationAngle}deg)`;
+
+    if (hoveredCard === cardIndex) {
+      transform += ` translateY(-20px) scale(1.05)`;
+    }
+
+    return {
+      transform,
+      zIndex: hoveredCard === cardIndex ? 10 : 1,
+      ['--start-rotate' as string]: `${rotationAngle}deg`,
+    };
+  };
+
   return (
     <>
       <header className="app-header">
-        {drawnCardIndices.length === 0 && <p>{t("subtitle")}</p>}
+        {showSubtitle && <p>{t("subtitle")}</p>}
         {!showButtons && (
           <p className="countdown">{t("countdown", { count: countdown })}</p>
         )}
       </header>
 
-      {showButtons && drawnCardIndices.length === 0 && (
-        <div className="draw-button-container">
-          <button className="btn btn-primary" onClick={() => drawCards(1)}>
-            {t("draw_card")}
-          </button>
-        </div>
+      {showButtons && revealedCard === null && (
+         <div className="draw-button-container">
+           <p>{t("choose_card")}</p>
+         </div>
       )}
 
       <main className="card-container">
-        {drawnCardIndices.map((cardIndex, index) => {
-          const card = quotes[cardIndex];
-          if (!card) return null; // Handle case where card might not be found (e.g., quotes not loaded yet)
-          return (
-            <div
-              className="card card-reveal"
-              key={index}
-              style={{ animationDelay: `${index * 0.5}s` }}
-            >
-              <img src={card.image} className="card-img-top" alt={card.title} />
-              <div className="card-body">
-                <h5 className="card-title">{card.title}</h5>
-                <p className="card-text">{card.quote}</p>
-                <button
-                  className="btn btn-info btn-sm"
-                  onClick={() => handleExplainClick(card)}
-                >
-                  {t("explain_more")}
-                </button>
+        {revealedCard !== null ? (
+          drawnCardIndices.map((cardIndex) => {
+            const card = quotes[cardIndex];
+            if (!card) return null;
+            return (
+              <div
+                className={`card revealed`}
+                key={cardIndex}
+              >
+                <img src={card.image} className="card-img-top" alt={card.title} />
+                <div className="card-body">
+                  <h5 className="card-title">{card.title}</h5>
+                  <p className="card-text">{card.quote}</p>
+                  <button
+                    className="btn btn-info btn-sm"
+                    onClick={() => handleExplainClick(card)}
+                  >
+                    {t("explain_more")}
+                  </button>
+                </div>
               </div>
+            );
+          })
+        ) : (
+          showButtons && (
+            <div className={`card-fan ${fanVisible ? 'visible' : ''}`}>
+              {fanCardIndices.map((cardIndex, index) => (
+                <div
+                  key={cardIndex}
+                  className={`card ${selectedFanCard === cardIndex ? 'selected' : ''}`}
+                  style={getCardFanStyles(index, cardIndex)}
+                  onClick={() => handleCardSelect(cardIndex)}
+                  onMouseEnter={() => setHoveredCard(cardIndex)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  <img src="/img/back.png" alt="Card Back" style={{ width: '100%', borderRadius: '10px' }} />
+                </div>
+              ))}
             </div>
-          );
-        })}
+          )
+        )}
       </main>
 
-      {drawnCardIndices.length > 0 && (
+      {revealedCard !== null && (
         <div className="start-over-container">
           <button className="btn btn-secondary" onClick={handleStartOver}>
             {t("start_over")}
