@@ -350,6 +350,7 @@ html {
 
 .card.selected {
   animation: fly-out 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  z-index: 20; /* Ensure the selected card is on top */
 }
 
 @keyframes fly-out {

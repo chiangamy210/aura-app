@@ -197,9 +197,11 @@ function Home() {
       transform += ` translateY(-20px) scale(1.05)`;
     }
 
+    const zIndex = selectedFanCard === cardIndex ? 20 : (hoveredCard === cardIndex || tappedCard === cardIndex ? 10 : 1);
+
     return {
       transform,
-      zIndex: hoveredCard === cardIndex || tappedCard === cardIndex ? 10 : 1,
+      zIndex,
       ['--start-rotate' as string]: `${rotationAngle}deg`,
     };
   };
