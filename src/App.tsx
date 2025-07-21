@@ -210,7 +210,7 @@ function Home() {
       </header>
 
       {showButtons && revealedCard === null && (
-         <div className="draw-button-container">
+         <div className="choose-card-container">
            <p>{t("choose_card")}</p>
          </div>
       )}

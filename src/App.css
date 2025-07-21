@@ -212,6 +212,20 @@ html {
   font-weight: 500;
 }
 
+.choose-card-container {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.choose-card-container p {
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0.8;
+  transition: opacity 0.5s ease-out;
+}
+
 .draw-button-container,
 .start-over-container {
   margin-bottom: 1rem;

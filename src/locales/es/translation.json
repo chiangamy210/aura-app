@@ -4,6 +4,7 @@
     "subtitle": "Cierra los ojos... y permite que una pregunta nazca desde lo profundo de tu corazón.",
     "countdown": "...{{count}}",
     "draw_card": "Saca una Carta",
+    "choose_card": "Elige una carta que te llame.",
     "explain_more": "Explica Más",
     "start_over": "Saca Otra Carta",
     "loading": "Obteniendo tu explicación...",
