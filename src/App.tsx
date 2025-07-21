@@ -42,6 +42,9 @@ function Home() {
   const [revealedCard, setRevealedCard] = useState<number | null>(null);
   const [selectedFanCard, setSelectedFanCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [tappedCard, setTappedCard] = useState<number | null>(null);
+  
+  
 
   const [showSubtitle, setShowSubtitle] = useState(true);
 
@@ -190,15 +193,28 @@ function Home() {
     const rotationAngle = (index - Math.floor(cardsCount / 2)) * angleMultiplier;
     let transform = `rotate(${rotationAngle}deg)`;
 
-    if (hoveredCard === cardIndex) {
+    if (hoveredCard === cardIndex || tappedCard === cardIndex) {
       transform += ` translateY(-20px) scale(1.05)`;
     }
 
     return {
       transform,
-      zIndex: hoveredCard === cardIndex ? 10 : 1,
+      zIndex: hoveredCard === cardIndex || tappedCard === cardIndex ? 10 : 1,
       ['--start-rotate' as string]: `${rotationAngle}deg`,
     };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent, cardIndex: number) => {
+    e.preventDefault(); // Prevent the click event from firing
+    if (tappedCard === cardIndex) {
+      // This is the second tap, so draw the card
+      handleCardSelect(cardIndex);
+      setTappedCard(null);
+    } else {
+      // This is the first tap, so make the card stand out
+      setTappedCard(cardIndex);
+      setHoveredCard(null); // Ensure hover state is cleared on tap
+    }
   };
 
   return (
@@ -246,11 +262,12 @@ function Home() {
               {fanCardIndices.map((cardIndex, index) => (
                 <div
                   key={cardIndex}
-                  className={`card ${selectedFanCard === cardIndex ? 'selected' : ''}`}
+                  className={`card ${selectedFanCard === cardIndex ? 'selected' : ''} ${tappedCard === cardIndex ? 'tapped' : ''}`}
                   style={getCardFanStyles(index, cardIndex)}
-                  onClick={() => handleCardSelect(cardIndex)}
                   onMouseEnter={() => setHoveredCard(cardIndex)}
                   onMouseLeave={() => setHoveredCard(null)}
+                  onClick={() => handleCardSelect(cardIndex)}
+                  onTouchEnd={(e) => handleTouchEnd(e, cardIndex)}
                 >
                   <img src="/img/back.png" alt="Card Back" style={{ width: '100%', borderRadius: '10px' }} />
                 </div>
