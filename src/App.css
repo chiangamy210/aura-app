@@ -289,13 +289,6 @@ html {
   flex-grow: 1; /* Allow this to take up available space */
   perspective: 1800px;
   position: relative;
-  min-height: 300px;
-}
-
-@media (min-height: 600px) {
-  .card-container {
-    min-height: 400px;
-  }
 }
 
 .card-fan {
@@ -316,8 +309,8 @@ html {
 .card-fan .card {
   position: absolute;
   bottom: 0;
-  width: 120px;
-  height: 168px;
+  width: 160px;
+  height: 224px; /* Maintain aspect ratio */
   transform-origin: bottom center;
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
@@ -325,20 +318,6 @@ html {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   padding: 0;
-}
-
-@media (min-width: 600px) {
-  .card-fan .card {
-    width: 140px;
-    height: 196px;
-  }
-}
-
-@media (min-width: 768px) {
-  .card-fan .card {
-    width: 160px;
-    height: 224px;
-  }
 }
 
 .card-fan .card img {

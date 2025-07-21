@@ -186,8 +186,7 @@ function Home() {
 
   const getCardFanStyles = (index: number, cardIndex: number) => {
     const cardsCount = fanCardIndices.length;
-    const angleMultiplier = window.innerWidth < 600 ? 6 : 4;
-    const rotationAngle = (index - Math.floor(cardsCount / 2)) * angleMultiplier;
+    const rotationAngle = (index - Math.floor(cardsCount / 2)) * 4;
     let transform = `rotate(${rotationAngle}deg)`;
 
     if (hoveredCard === cardIndex) {
