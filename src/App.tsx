@@ -122,12 +122,20 @@ function Home() {
     }, 1000); // Match animation duration
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleExplainClick = (card: Quote) => {
     setSelectedCard(card);
-    const question = prompt(t('question_prompt'));
-    if (question) {
-      setUserQuestion(question);
-    }
+    setIsModalOpen(true);
+  };
+
+  const handleModalSubmit = (question: string) => {
+    setUserQuestion(question);
+    setIsModalOpen(false);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   const getExplanation = async (lang: string | null) => {
@@ -273,6 +281,22 @@ function Home() {
           <h3>{t('ai_response_title')}</h3>
           <ReactMarkdown>{aiResponse}</ReactMarkdown>
         </section>
+      )}
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>{t('question_prompt')}</h3>
+            <textarea
+              id="question-input"
+              rows={4}
+            />
+            <div className="modal-buttons">
+              <button className="submit-btn" onClick={() => handleModalSubmit((document.getElementById('question-input') as HTMLTextAreaElement).value)}>Submit</button>
+              <button className="cancel-btn" onClick={handleModalClose}>Cancel</button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

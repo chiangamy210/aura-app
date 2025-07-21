@@ -488,3 +488,96 @@ html {
   font-size: 0.9rem;
   color: var(--text-color);
 }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(92, 92, 92, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  border: 1px solid var(--primary-color);
+}
+
+.modal-content h3 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin: 0 0 1.5rem 0;
+}
+
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--primary-color);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  background-color: #fdf6f0;
+  color: var(--text-color);
+}
+
+.modal-content textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(247, 163, 153, 0.3);
+}
+
+.modal-content .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.modal-content button {
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.modal-content .submit-btn {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+.modal-content .submit-btn:hover {
+  background-color: #f8b4ab;
+  border-color: #f8b4ab;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(247, 163, 153, 0.5);
+}
+
+.modal-content .cancel-btn {
+  background-color: transparent;
+  border-color: var(--text-color);
+  color: var(--text-color);
+}
+
+.modal-content .cancel-btn:hover {
+  background-color: var(--text-color);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px var(--shadow-color);
+}
