@@ -309,7 +309,7 @@ html {
 
 .card-fan .card {
   position: absolute;
-  bottom: -50px; /* Adjusted to move cards down */
+  bottom: -50px;
   width: 160px;
   height: 224px; /* Maintain aspect ratio */
   transform-origin: bottom center;
@@ -324,7 +324,6 @@ html {
 .card-fan .card img {
   width: 100%;
   height: 100%;
-  /* object-fit: cover; */
   display: block;
 }
 
@@ -532,7 +531,7 @@ html {
 
 .modal-content h3 {
   font-family: var(--font-serif);
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   color: var(--accent-color);
   margin: 0 0 1.5rem 0;
 }
