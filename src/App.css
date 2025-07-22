@@ -289,13 +289,6 @@ html {
   flex-grow: 1; /* Allow this to take up available space */
   perspective: 1800px;
   position: relative;
-  min-height: 300px;
-}
-
-@media (min-height: 600px) {
-  .card-container {
-    min-height: 400px;
-  }
 }
 
 .card-fan {
@@ -307,6 +300,7 @@ html {
   height: 100%;
   opacity: 0;
   transition: opacity 1s ease-in-out;
+  padding-top: 50px; /* Added padding to the top */
 }
 
 .card-fan.visible {
@@ -315,9 +309,9 @@ html {
 
 .card-fan .card {
   position: absolute;
-  bottom: 0;
-  width: 120px;
-  height: 168px;
+  bottom: -50px; /* Adjusted to move cards down */
+  width: 160px;
+  height: 224px; /* Maintain aspect ratio */
   transform-origin: bottom center;
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
@@ -327,30 +321,15 @@ html {
   padding: 0;
 }
 
-@media (min-width: 600px) {
-  .card-fan .card {
-    width: 140px;
-    height: 196px;
-  }
-}
-
-@media (min-width: 768px) {
-  .card-fan .card {
-    width: 160px;
-    height: 224px;
-  }
-}
-
 .card-fan .card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
   display: block;
 }
 
 .card.selected {
   animation: fly-out 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
-  z-index: 20; /* Ensure the selected card is on top */
 }
 
 @keyframes fly-out {
@@ -398,12 +377,6 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.card-fan .card:hover,
-.card-fan .card.tapped {
-  transform: translateY(-20px) scale(1.05);
-  z-index: 10;
 }
 
 .card:hover {
@@ -583,9 +556,9 @@ html {
 }
 
 .modal-content .modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .modal-content button {

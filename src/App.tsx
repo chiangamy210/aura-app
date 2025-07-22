@@ -35,7 +35,7 @@ function Home() {
   const [showButtons, setShowButtons] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
-  const [userQuestion, setUserQuestion] = useState('');
+  const [userQuestion, setUserQuestion] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [quotes, setQuotes] = useState<Quote[]>([]);
@@ -43,8 +43,6 @@ function Home() {
   const [selectedFanCard, setSelectedFanCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [tappedCard, setTappedCard] = useState<number | null>(null);
-  
-  
 
   const [showSubtitle, setShowSubtitle] = useState(true);
 
@@ -74,7 +72,9 @@ function Home() {
         const quotesModule = await loadModule();
         setQuotes(quotesModule.default);
         // Set up the initial fan of cards
-        const shuffledIndices = Array.from(quotesModule.default.keys()).sort(() => 0.5 - Math.random());
+        const shuffledIndices = Array.from(quotesModule.default.keys()).sort(
+          () => 0.5 - Math.random()
+        );
         setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
       } catch (error) {
         console.error("Error loading quotes:", error);
@@ -96,7 +96,7 @@ function Home() {
   }, [showButtons]);
 
   useEffect(() => {
-    document.title = t('title') + ' - Your Gentle Guide';
+    document.title = t("title") + " - Your Gentle Guide";
     if (countdown > 0) {
       const timer = setTimeout(() => {
         setCountdown(countdown - 1);
@@ -117,7 +117,7 @@ function Home() {
   const handleCardSelect = (cardIndex: number) => {
     setSelectedFanCard(cardIndex);
     setAiResponse("");
-    
+
     // Animate out the selected card
     setTimeout(() => {
       setDrawnCardIndices([cardIndex]);
@@ -143,7 +143,7 @@ function Home() {
 
   const getExplanation = async (lang: string | null) => {
     if (!selectedCard || !userQuestion) {
-      console.error('selectedCard or userQuestion is null');
+      console.error("selectedCard or userQuestion is null");
       setIsLoading(false);
       return;
     }
@@ -190,19 +190,20 @@ function Home() {
   const getCardFanStyles = (index: number, cardIndex: number) => {
     const cardsCount = fanCardIndices.length;
     const angleMultiplier = window.innerWidth < 600 ? 6 : 4;
-    const rotationAngle = (index - Math.floor(cardsCount / 2)) * angleMultiplier;
+    const rotationAngle =
+      (index - Math.floor(cardsCount / 2)) * angleMultiplier;
     let transform = `rotate(${rotationAngle}deg)`;
 
     if (hoveredCard === cardIndex || tappedCard === cardIndex) {
-      transform += ` translateY(-20px) scale(1.05)`;
+      transform += ` translateY(-4rem) scale(1.1)`;
     }
-
-    const zIndex = selectedFanCard === cardIndex ? 20 : (hoveredCard === cardIndex || tappedCard === cardIndex ? 10 : 1);
+    const zIndex = 10;
+    // const zIndex = selectedFanCard === cardIndex ? 20 : (hoveredCard === cardIndex || tappedCard === cardIndex ? 10 : 1);
 
     return {
       transform,
       zIndex,
-      ['--start-rotate' as string]: `${rotationAngle}deg`,
+      ["--start-rotate" as string]: `${rotationAngle}deg`,
     };
   };
 
@@ -229,54 +230,59 @@ function Home() {
       </header>
 
       {showButtons && revealedCard === null && (
-         <div className="choose-card-container">
-           <p>{t("choose_card")}</p>
-         </div>
+        <div className="choose-card-container">
+          <p>{t("choose_card")}</p>
+        </div>
       )}
 
       <main className="card-container">
-        {revealedCard !== null ? (
-          drawnCardIndices.map((cardIndex) => {
-            const card = quotes[cardIndex];
-            if (!card) return null;
-            return (
-              <div
-                className={`card revealed`}
-                key={cardIndex}
-              >
-                <img src={card.image} className="card-img-top" alt={card.title} />
-                <div className="card-body">
-                  <h5 className="card-title">{card.title}</h5>
-                  <p className="card-text">{card.quote}</p>
-                  <button
-                    className="btn btn-info btn-sm"
-                    onClick={() => handleExplainClick(card)}
+        {revealedCard !== null
+          ? drawnCardIndices.map((cardIndex) => {
+              const card = quotes[cardIndex];
+              if (!card) return null;
+              return (
+                <div className={`card revealed`} key={cardIndex}>
+                  <img
+                    src={card.image}
+                    className="card-img-top"
+                    alt={card.title}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{card.title}</h5>
+                    <p className="card-text">{card.quote}</p>
+                    <button
+                      className="btn btn-info btn-sm"
+                      onClick={() => handleExplainClick(card)}
+                    >
+                      {t("explain_more")}
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          : showButtons && (
+              <div className={`card-fan ${fanVisible ? "visible" : ""}`}>
+                {fanCardIndices.map((cardIndex, index) => (
+                  <div
+                    key={cardIndex}
+                    className={`card ${
+                      selectedFanCard === cardIndex ? "selected" : ""
+                    } ${tappedCard === cardIndex ? "tapped" : ""}`}
+                    style={getCardFanStyles(index, cardIndex)}
+                    onMouseEnter={() => setHoveredCard(cardIndex)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    onClick={() => handleCardSelect(cardIndex)}
+                    onTouchEnd={(e) => handleTouchEnd(e, cardIndex)}
                   >
-                    {t("explain_more")}
-                  </button>
-                </div>
+                    <img
+                      src="/img/back.png"
+                      alt="Card Back"
+                      style={{ width: "100%", borderRadius: "10px" }}
+                    />
+                  </div>
+                ))}
               </div>
-            );
-          })
-        ) : (
-          showButtons && (
-            <div className={`card-fan ${fanVisible ? 'visible' : ''}`}>
-              {fanCardIndices.map((cardIndex, index) => (
-                <div
-                  key={cardIndex}
-                  className={`card ${selectedFanCard === cardIndex ? 'selected' : ''} ${tappedCard === cardIndex ? 'tapped' : ''}`}
-                  style={getCardFanStyles(index, cardIndex)}
-                  onMouseEnter={() => setHoveredCard(cardIndex)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  onClick={() => handleCardSelect(cardIndex)}
-                  onTouchEnd={(e) => handleTouchEnd(e, cardIndex)}
-                >
-                  <img src="/img/back.png" alt="Card Back" style={{ width: '100%', borderRadius: '10px' }} />
-                </div>
-              ))}
-            </div>
-          )
-        )}
+            )}
       </main>
 
       {revealedCard !== null && (
@@ -298,7 +304,7 @@ function Home() {
 
       {aiResponse && (
         <section className="ai-response">
-          <h3>{t('ai_response_title')}</h3>
+          <h3>{t("ai_response_title")}</h3>
           <ReactMarkdown>{aiResponse}</ReactMarkdown>
         </section>
       )}
@@ -306,14 +312,26 @@ function Home() {
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>{t('question_prompt')}</h3>
-            <textarea
-              id="question-input"
-              rows={4}
-            />
+            <h3>{t("question_prompt")}</h3>
+            <textarea id="question-input" rows={4} />
             <div className="modal-buttons">
-              <button className="submit-btn" onClick={() => handleModalSubmit((document.getElementById('question-input') as HTMLTextAreaElement).value)}>Submit</button>
-              <button className="cancel-btn" onClick={handleModalClose}>Cancel</button>
+              <button
+                className="submit-btn"
+                onClick={() =>
+                  handleModalSubmit(
+                    (
+                      document.getElementById(
+                        "question-input"
+                      ) as HTMLTextAreaElement
+                    ).value
+                  )
+                }
+              >
+                Submit
+              </button>
+              <button className="cancel-btn" onClick={handleModalClose}>
+                Cancel
+              </button>
             </div>
           </div>
         </div>
