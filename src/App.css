@@ -313,18 +313,44 @@ html {
   transform-origin: center center;
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
-  border-radius: 15px; /* Softer radius */
+  border-radius: 15px;
   box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin #f7a399,
     0 0 4vmin #f7a399 inset;
-  overflow: hidden;
   padding: 0;
+  /* New styles for 3D flip */
+  background-color: transparent;
+  perspective: 1000px;
+  border: none;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
 }
 
 .card-fan .card img {
   width: 100%;
   height: 100%;
   display: block;
-  /* object-fit: cover; */
 }
 
 @keyframes pulsate {
@@ -349,19 +375,24 @@ html {
 }
 
 .card.selected {
-  animation: flip-and-reveal 1s forwards;
+  /* Keep the card centered during the animation */
+  transform: var(--center-transform) !important;
+  z-index: 100 !important;
+  /* The animation will be on the inner element, but we fade out the whole card */
+  animation: fade-out-card 0.2s forwards 0.8s; /* Fade out for 0.2s after 0.8s delay */
 }
 
-@keyframes flip-and-reveal {
-  0% {
-    transform: var(--center-transform) rotateY(0deg);
+.card.selected .card-inner {
+  transform: rotateY(180deg);
+}
+
+@keyframes fade-out-card {
+  from {
+    opacity: 1;
   }
-  50% {
-    transform: var(--center-transform) rotateY(180deg);
-  }
-  100% {
-    transform: var(--center-transform) rotateY(180deg);
+  to {
     opacity: 0;
+    visibility: hidden;
   }
 }
 
