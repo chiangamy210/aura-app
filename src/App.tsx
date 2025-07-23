@@ -247,6 +247,7 @@ function Home() {
                     src={card.image}
                     className="card-img-top"
                     alt={card.title}
+                    loading="lazy"
                   />
                   <div className="card-body">
                     <h5 className="card-title">{card.title}</h5>
@@ -286,6 +287,7 @@ function Home() {
                           src={quotes[cardIndex]?.image}
                           alt={quotes[cardIndex]?.title}
                           style={{ width: "100%", borderRadius: "10px" }}
+                          loading="lazy"
                         />
                       </div>
                     </div>
