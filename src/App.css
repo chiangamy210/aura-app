@@ -189,24 +189,24 @@ html {
 }
 
 .app-header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  margin-bottom: 1rem; /* Reduced margin */
+  width: 80%;
 }
 
 .app-header p {
-  font-size: 1.2rem; /* Increase font size */
+  font-size: 1.5rem;
   line-height: 1.7;
   margin: 0;
   opacity: 0.8;
   transition: opacity 0.5s ease-out;
 }
 
-.app-header p.hidden {
-  opacity: 0;
-}
-
 .countdown {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--accent-color);
   margin-top: 1rem;
   font-weight: 500;
@@ -292,73 +292,12 @@ html {
 }
 
 .card-fan {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 60vmin;
+  height: 60vmin;
+  margin: 0 auto;
   opacity: 0;
   transition: opacity 1s ease-in-out;
-  padding-top: 50px; /* Added padding to the top */
-}
-
-@media (max-width: 768px) {
-  .card-fan .card {
-    width: 40vw;
-    max-width: 180px;
-    height: auto;
-    max-height: 252px;
-  }
-
-  .card-fan .card:nth-child(1) {
-    transform: translateX(-100%) rotate(-20deg);
-  }
-
-  .card-fan .card:nth-child(2) {
-    transform: translateX(-50%) rotate(-10deg);
-  }
-
-  .card-fan .card:nth-child(3) {
-    transform: translateX(0) rotate(0deg);
-  }
-
-  .card-fan .card:nth-child(4) {
-    transform: translateX(50%) rotate(10deg);
-  }
-
-  .card-fan .card:nth-child(5) {
-    transform: translateX(100%) rotate(20deg);
-  }
-}
-
-@media (max-width: 480px) {
-  .card-fan .card {
-    width: 50vw;
-    max-width: 200px;
-    height: auto;
-    max-height: 280px;
-  }
-
-  .card-fan .card:nth-child(1) {
-    transform: translateX(-80%) rotate(-15deg);
-  }
-
-  .card-fan .card:nth-child(2) {
-    transform: translateX(-40%) rotate(-7.5deg);
-  }
-
-  .card-fan .card:nth-child(3) {
-    transform: translateX(0) rotate(0deg);
-  }
-
-  .card-fan .card:nth-child(4) {
-    transform: translateX(40%) rotate(7.5deg);
-  }
-
-  .card-fan .card:nth-child(5) {
-    transform: translateX(80%) rotate(15deg);
-  }
 }
 
 .card-fan.visible {
@@ -367,48 +306,63 @@ html {
 
 .card-fan .card {
   position: absolute;
-  bottom: -10%; /* Relative to card height */
-  width: 30vw; /* Use viewport width for responsiveness */
-  max-width: 160px; /* Max width for larger screens */
-  height: auto; /* Maintain aspect ratio */
-  max-height: 224px; /* Max height for larger screens */
-  transform-origin: bottom center;
+  left: 50%;
+  top: 50%;
+  width: 10vmin;
+  height: 14vmin;
+  transform-origin: center center;
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   border-radius: 15px; /* Softer radius */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin #f7a399,
+    0 0 4vmin #f7a399 inset;
   overflow: hidden;
   padding: 0;
-}
-
-.card-fan .card:nth-child(1) {
-  transform: translateX(-120%) rotate(-25deg);
-}
-
-.card-fan .card:nth-child(2) {
-  transform: translateX(-60%) rotate(-12.5deg);
-}
-
-.card-fan .card:nth-child(3) {
-  transform: translateX(0) rotate(0deg);
-}
-
-.card-fan .card:nth-child(4) {
-  transform: translateX(60%) rotate(12.5deg);
-}
-
-.card-fan .card:nth-child(5) {
-  transform: translateX(120%) rotate(25deg);
 }
 
 .card-fan .card img {
   width: 100%;
   height: 100%;
   display: block;
+  /* object-fit: cover; */
+}
+
+@keyframes pulsate {
+  0% {
+    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 2vmin var(--accent-color),
+      0 0 3vmin var(--primary-color) inset;
+  }
+  50% {
+    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin var(--accent-color),
+      0 0 4vmin var(--primary-color) inset;
+  }
+  100% {
+    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 2vmin var(--accent-color),
+      0 0 3vmin var(--primary-color) inset;
+  }
+}
+
+.card.tapped {
+  transform: var(--center-transform) !important;
+  z-index: 100 !important;
+  animation: none;
 }
 
 .card.selected {
-  animation: fly-out 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  animation: flip-and-reveal 1s forwards;
+}
+
+@keyframes flip-and-reveal {
+  0% {
+    transform: var(--center-transform) rotateY(0deg);
+  }
+  50% {
+    transform: var(--center-transform) rotateY(180deg);
+  }
+  100% {
+    transform: var(--center-transform) rotateY(180deg);
+    opacity: 0;
+  }
 }
 
 @keyframes fly-out {

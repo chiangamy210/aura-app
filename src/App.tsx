@@ -41,7 +41,7 @@ function Home() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [revealedCard, setRevealedCard] = useState<number | null>(null);
   const [selectedFanCard, setSelectedFanCard] = useState<number | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
   const [tappedCard, setTappedCard] = useState<number | null>(null);
 
   const [showSubtitle, setShowSubtitle] = useState(true);
@@ -187,37 +187,38 @@ function Home() {
     window.location.reload();
   };
 
-  const getCardFanStyles = (index: number, cardIndex: number) => {
+  const getCardFanStyles = (index: number) => {
     const cardsCount = fanCardIndices.length;
-    const angleMultiplier = window.innerWidth < 600 ? 6 : 4;
-    const rotationAngle =
-      (index - Math.floor(cardsCount / 2)) * angleMultiplier;
-    let transform = `rotate(${rotationAngle}deg)`;
+    const angle = (345 / cardsCount) * index;
+    const radius = 25; // in vmin
+    const x = radius * Math.cos((angle * Math.PI) / 180);
+    const y = radius * Math.sin((angle * Math.PI) / 180);
+    const rotationAngle = angle + 90;
 
-    if (hoveredCard === cardIndex || tappedCard === cardIndex) {
-      transform += ` translateY(-4rem) scale(1.1)`;
-    }
-    const zIndex = 10;
-    // const zIndex = selectedFanCard === cardIndex ? 20 : (hoveredCard === cardIndex || tappedCard === cardIndex ? 10 : 1);
+    const transform = `translateX(-50%) translateY(-50%) translate(${x}vmin, ${y}vmin) rotate(${rotationAngle}deg)`;
+    const centerTransform = `translateX(-50%) translateY(-50%) translate(0, 0) scale(1.2) rotate(0deg)`;
 
     return {
       transform,
-      zIndex,
-      ["--start-rotate" as string]: `${rotationAngle}deg`,
+      zIndex: index,
+      ["--center-transform" as string]: centerTransform,
     };
   };
 
-  const handleTouchEnd = (e: React.TouchEvent, cardIndex: number) => {
-    e.preventDefault(); // Prevent the click event from firing
+  const handleTap = (cardIndex: number) => {
     if (tappedCard === cardIndex) {
-      // This is the second tap, so draw the card
+      // Second tap
       handleCardSelect(cardIndex);
       setTappedCard(null);
     } else {
-      // This is the first tap, so make the card stand out
+      // First tap
       setTappedCard(cardIndex);
-      setHoveredCard(null); // Ensure hover state is cleared on tap
     }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent, cardIndex: number) => {
+    e.preventDefault();
+    handleTap(cardIndex);
   };
 
   return (
@@ -268,17 +269,26 @@ function Home() {
                     className={`card ${
                       selectedFanCard === cardIndex ? "selected" : ""
                     } ${tappedCard === cardIndex ? "tapped" : ""}`}
-                    style={getCardFanStyles(index, cardIndex)}
-                    onMouseEnter={() => setHoveredCard(cardIndex)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                    onClick={() => handleCardSelect(cardIndex)}
+                    style={getCardFanStyles(index)}
+                    onClick={() => handleTap(cardIndex)}
                     onTouchEnd={(e) => handleTouchEnd(e, cardIndex)}
                   >
-                    <img
-                      src="/img/back.png"
-                      alt="Card Back"
-                      style={{ width: "100%", borderRadius: "10px" }}
-                    />
+                    <div className="card-inner">
+                      <div className="card-front">
+                        <img
+                          src="/img/back.png"
+                          alt="Card Back"
+                          style={{ width: "100%", borderRadius: "10px" }}
+                        />
+                      </div>
+                      <div className="card-back">
+                        <img
+                          src={quotes[cardIndex]?.image}
+                          alt={quotes[cardIndex]?.title}
+                          style={{ width: "100%", borderRadius: "10px" }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
