@@ -246,7 +246,7 @@ function Home() {
                   <img
                     src={card.image}
                     className="card-img-top"
-                    alt={card.title}
+                    alt={`Aura guidance card: ${card.title}`}
                     loading="lazy"
                   />
                   <div className="card-body">
@@ -278,14 +278,18 @@ function Home() {
                       <div className="card-front">
                         <img
                           src="/img/back.png"
-                          alt="Card Back"
+                          alt="The back of a mysterious Aura card, waiting to be revealed."
                           style={{ width: "100%", borderRadius: "10px" }}
                         />
                       </div>
                       <div className="card-back">
                         <img
                           src={quotes[cardIndex]?.image}
-                          alt={quotes[cardIndex]?.title}
+                          alt={
+                            quotes[cardIndex]
+                              ? `Aura guidance card: ${quotes[cardIndex].title}`
+                              : "Aura guidance card"
+                          }
                           style={{ width: "100%", borderRadius: "10px" }}
                           loading="lazy"
                         />
@@ -364,7 +368,7 @@ function App() {
       <div className="app-container">
         <div className="top-bar">
           <Link to="/" className="app-title-link">
-            <h1 className="app-title">{t("title")}</h1>
+            <h1 className="app-title">Aura</h1>
           </Link>
           <div className="how-it-works-switcher">
             <NavLink

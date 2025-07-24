@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aura-your-gentle-guide.vercel.app/sitemap.xml
