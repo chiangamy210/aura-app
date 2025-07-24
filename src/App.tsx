@@ -51,6 +51,13 @@ function Home() {
   const [fanCardIndices, setFanCardIndices] = useState<number[]>([]);
 
   useEffect(() => {
+    // This effect runs only once to set up the initial fan of cards.
+    const indices = Array.from({ length: fanCardsCount }, (_, i) => i);
+    const shuffledIndices = indices.sort(() => 0.5 - Math.random());
+    setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
+  }, []); // Empty dependency array ensures this runs only once.
+
+  useEffect(() => {
     const loadQuotes = async () => {
       const lang = i18n.language;
       let loadModule;
@@ -71,11 +78,6 @@ function Home() {
       try {
         const quotesModule = await loadModule();
         setQuotes(quotesModule.default);
-        // Set up the initial fan of cards
-        const shuffledIndices = Array.from(quotesModule.default.keys()).sort(
-          () => 0.5 - Math.random()
-        );
-        setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
       } catch (error) {
         console.error("Error loading quotes:", error);
         const quotesModule = await quoteModules.en();
