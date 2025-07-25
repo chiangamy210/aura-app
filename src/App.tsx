@@ -368,6 +368,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
+        <p className="visually-hidden">Feeling confused or upset? Aura provides insightful quotes and AI-powered explanations to help you find clarity and guidance when you need it most. Draw a card, ask a question, and let Aura be your gentle guide.</p>
         <div className="top-bar">
           <Link to="/" className="app-title-link">
             <h1 className="app-title">Aura</h1>
