@@ -240,7 +240,7 @@ function Home() {
         </div>
       )}
 
-      <main className="card-container">
+      <main className="main-content">
         {revealedCard !== null
           ? drawnCardIndices.map((cardIndex) => {
               const card = quotes[cardIndex];
@@ -319,15 +319,17 @@ function Home() {
       )}
 
       {isLoading && (
-        <div className="loading-indicator">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
+        <div className="loading-overlay">
+          <div className="loading-indicator">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p>{t("loading")}</p>
           </div>
-          <p>{t("loading")}</p>
         </div>
       )}
 
-      {aiResponse && (
+      {!isLoading && aiResponse && (
         <section className="ai-response">
           <h3>{t("ai_response_title")}</h3>
           <ReactMarkdown>{aiResponse}</ReactMarkdown>

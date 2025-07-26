@@ -74,6 +74,15 @@ html {
   min-height: 90vh; /* Ensure it takes up most of the screen */
 }
 
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .top-bar {
   width: 100%;
   display: flex;
@@ -251,7 +260,12 @@ html {
 }
 
 .btn-primary {
-  background-image: linear-gradient(to right, var(--accent-color) 0%, #9a7fbf 51%, var(--accent-color) 100%);
+  background-image: linear-gradient(
+    to right,
+    var(--accent-color) 0%,
+    #9a7fbf 51%,
+    var(--accent-color) 100%
+  );
   background-size: 200% auto;
   border: none;
   color: var(--primary-color);
@@ -268,7 +282,12 @@ html {
 }
 
 .btn-secondary {
-  background-image: linear-gradient(to right, var(--secondary-color) 0%, #5c5470 51%, var(--secondary-color) 100%);
+  background-image: linear-gradient(
+    to right,
+    var(--secondary-color) 0%,
+    #5c5470 51%,
+    var(--secondary-color) 100%
+  );
   background-size: 200% auto;
   border: none;
   color: white;
@@ -284,7 +303,12 @@ html {
 }
 
 .btn-info {
-  background-image: linear-gradient(to right, #3e3e5a 0%, #2a2a4a 51%, #3e3e5a 100%);
+  background-image: linear-gradient(
+    to right,
+    #3e3e5a 0%,
+    #2a2a4a 51%,
+    #3e3e5a 100%
+  );
   background-size: 200% auto;
   border: none;
   color: var(--text-color);
@@ -334,7 +358,8 @@ html {
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   border-radius: 1vmin;
-  box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin #c0c0c0, 0 0 4vmin #c0c0c0 inset;
+  box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin #c0c0c0,
+    0 0 4vmin #c0c0c0 inset;
   padding: 0;
   /* New styles for 3D flip */
   background-color: transparent;
@@ -364,6 +389,8 @@ html {
 
 .card-back {
   transform: rotateY(180deg);
+  box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin #c0c0c0,
+    0 0 4vmin #c0c0c0 inset;
 }
 
 .card-fan .card img {
@@ -492,8 +519,23 @@ html {
   margin: 0 0 1.5rem 0;
 }
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  flex-direction: column;
+}
+
 .loading-indicator {
   text-align: center;
+  color: var(--accent-color);
 }
 
 .spinner-border {
@@ -662,7 +704,12 @@ html {
 }
 
 .modal-content .submit-btn {
-  background-image: linear-gradient(to right, var(--accent-color) 0%, #9a7fbf 51%, var(--accent-color) 100%);
+  background-image: linear-gradient(
+    to right,
+    var(--accent-color) 0%,
+    #9a7fbf 51%,
+    var(--accent-color) 100%
+  );
   background-size: 200% auto;
   border: none;
   color: var(--primary-color);
@@ -679,7 +726,12 @@ html {
 }
 
 .modal-content .cancel-btn {
-  background-image: linear-gradient(to right, #3e3e5a 0%, #2a2a4a 51%, #3e3e5a 100%);
+  background-image: linear-gradient(
+    to right,
+    #3e3e5a 0%,
+    #2a2a4a 51%,
+    #3e3e5a 100%
+  );
   background-size: 200% auto;
   border: none;
   color: var(--text-color);
