@@ -287,18 +287,21 @@ function Home() {
                         />
                       </div>
                       <div className="card-back">
-                        {flippedCard === cardIndex && (
-                          <img
-                            src={quotes[cardIndex]?.image}
-                            alt={
-                              quotes[cardIndex]
-                                ? `Aura guidance card: ${quotes[cardIndex].title}`
-                                : "Aura guidance card"
-                            }
-                            style={{ width: "100%", borderRadius: "10px" }}
-                            loading="lazy"
-                          />
-                        )}
+                        <img
+                          src={quotes[cardIndex]?.image}
+                          alt={
+                            quotes[cardIndex]
+                              ? `Aura guidance card: ${quotes[cardIndex].title}`
+                              : "Aura guidance card"
+                          }
+                          style={{
+                            width: "100%",
+                            borderRadius: "10px",
+                            opacity: flippedCard === cardIndex ? 1 : 0,
+                            transition: "opacity 0.3s ease-in-out",
+                          }}
+                          loading="eager" // Changed to eager as we are preloading
+                        />
                       </div>
                     </div>
                   </div>

@@ -403,6 +403,7 @@ html {
 
 .card.selected .card-inner {
   transform: rotateY(180deg);
+  transition: transform 0.8s ease-in-out;
 }
 
 @keyframes fade-out-card {
