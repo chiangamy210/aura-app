@@ -43,6 +43,7 @@ function Home() {
   const [selectedFanCard, setSelectedFanCard] = useState<number | null>(null);
 
   const [tappedCard, setTappedCard] = useState<number | null>(null);
+  const [flippedCard, setFlippedCard] = useState<number | null>(null);
 
   const [showSubtitle, setShowSubtitle] = useState(true);
 
@@ -210,6 +211,7 @@ function Home() {
   const handleTap = (cardIndex: number) => {
     if (tappedCard === cardIndex) {
       // Second tap
+      setFlippedCard(cardIndex);
       handleCardSelect(cardIndex);
       setTappedCard(null);
     } else {
@@ -279,22 +281,24 @@ function Home() {
                     <div className="card-inner">
                       <div className="card-front">
                         <img
-                          src="/img/back.png"
+                          src="/img/back-min.png"
                           alt="The back of a mysterious Aura card, waiting to be revealed."
                           style={{ width: "100%", borderRadius: "10px" }}
                         />
                       </div>
                       <div className="card-back">
-                        <img
-                          src={quotes[cardIndex]?.image}
-                          alt={
-                            quotes[cardIndex]
-                              ? `Aura guidance card: ${quotes[cardIndex].title}`
-                              : "Aura guidance card"
-                          }
-                          style={{ width: "100%", borderRadius: "10px" }}
-                          loading="lazy"
-                        />
+                        {flippedCard === cardIndex && (
+                          <img
+                            src={quotes[cardIndex]?.image}
+                            alt={
+                              quotes[cardIndex]
+                                ? `Aura guidance card: ${quotes[cardIndex].title}`
+                                : "Aura guidance card"
+                            }
+                            style={{ width: "100%", borderRadius: "10px" }}
+                            loading="lazy"
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -368,7 +372,12 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <p className="visually-hidden">Feeling confused or upset? Aura provides insightful quotes and AI-powered explanations to help you find clarity and guidance when you need it most. Draw a card, ask a question, and let Aura be your gentle guide.</p>
+        <p className="visually-hidden">
+          Feeling confused or upset? Aura provides insightful quotes and
+          AI-powered explanations to help you find clarity and guidance when you
+          need it most. Draw a card, ask a question, and let Aura be your gentle
+          guide.
+        </p>
         <div className="top-bar">
           <Link to="/" className="app-title-link">
             <h1 className="app-title">Aura</h1>
