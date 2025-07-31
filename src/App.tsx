@@ -11,7 +11,10 @@ import {
 } from "react-router-dom";
 import HowAuraWorks from "./HowAuraWorks";
 import HowToAsk from "./HowToAsk";
-import "./App.css";
+import "./styles/base.css";
+import "./styles/layout.css";
+import "./styles/components.css";
+import "./styles/animations.css";
 
 interface Quote {
   title: string;
@@ -33,6 +36,7 @@ function Home() {
   const { t, i18n } = useTranslation();
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
+  const [isStart, setIsStart] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
   const [userQuestion, setUserQuestion] = useState("");
@@ -45,7 +49,7 @@ function Home() {
   const [tappedCard, setTappedCard] = useState<number | null>(null);
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
 
-  const [showSubtitle, setShowSubtitle] = useState(true);
+  const [showSubtitle, setShowSubtitle] = useState(false);
 
   // Define the number of cards to display in the fan
   const fanCardsCount = 53;
@@ -100,22 +104,28 @@ function Home() {
 
   useEffect(() => {
     document.title = t("title") + " - Your Gentle Guide";
-    if (countdown > 0) {
+    if (isStart && countdown > 0) {
       const timer = setTimeout(() => {
         setCountdown(countdown - 1);
       }, 1000);
       return () => clearTimeout(timer);
-    } else {
+    } else if (countdown === 0) {
       setShowButtons(true);
       setShowSubtitle(false); // Hide subtitle when countdown finishes
     }
-  }, [countdown, t]);
+  }, [isStart, countdown, t]);
 
   useEffect(() => {
     if (selectedCard && userQuestion) {
       getExplanation(i18n.language);
     }
   }, [i18n.language, selectedCard, userQuestion]);
+
+  const handleIntroduction = () => {
+    setIsStart(true);
+    setShowSubtitle(true);
+    console.log("isStart");
+  };
 
   const handleCardSelect = (cardIndex: number) => {
     setSelectedFanCard(cardIndex);
@@ -228,9 +238,26 @@ function Home() {
   return (
     <>
       <header className="app-header">
-        {showSubtitle && <p>{t("subtitle")}</p>}
-        {!showButtons && (
-          <p className="countdown">{t("countdown", { count: countdown })}</p>
+        {!isStart && (
+          <div className="introduction-container">
+            <p>{t("introduction")}</p>
+            <button
+              className="btn btn-primary start-button"
+              onClick={handleIntroduction}
+            >
+              {t("start_button")}
+            </button>
+          </div>
+        )}
+        {isStart && (
+          <>
+            {showSubtitle && <p>{t("subtitle")}</p>}
+            {!showButtons && (
+              <p className="countdown">
+                {t("countdown", { count: countdown })}
+              </p>
+            )}
+          </>
         )}
       </header>
 
@@ -377,12 +404,6 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <p className="visually-hidden">
-          Feeling confused or upset? Aura provides insightful quotes and
-          AI-powered explanations to help you find clarity and guidance when you
-          need it most. Draw a card, ask a question, and let Aura be your gentle
-          guide.
-        </p>
         <div className="top-bar">
           <Link to="/" className="app-title-link">
             <h1 className="app-title">Aura</h1>

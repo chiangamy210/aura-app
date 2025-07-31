@@ -1,7 +1,9 @@
 {
   "translation": {
     "title": "Aura",
+    "introduction": "Aura is your gentle guide for inner clarity. With heartfelt quotes and AI-powered reflections, Aura walks with you—helping you return to a place of calm and insight. Whatever you're moving through today, Aura is here to support you, softly and steadily. Ready to begin? Let’s take the first step together.",
     "subtitle": "Closing your eyes... allow a question to gently rise from within your heart",
+    "start_button": "Start",
     "countdown": "...{{count}}",
     "draw_card": "Draw a Card",
     "shuffling": "Shuffling...",

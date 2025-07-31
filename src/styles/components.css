@@ -1,94 +1,3 @@
-:root {
-  --primary-color: #1b1b2f; /* dark slate blue */
-  --secondary-color: #5c5470; /* muted purple */
-  --accent-color: #b39ddb; /* soft lavender */
-  --text-color: #e0e0e0; /* lighter grey for better visibility */
-  --bg-color: #0d0c1d; /* very dark desaturated blue */
-  --card-bg: #1f1f3d; /* dark blue */
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --font-serif: "Noto Serif TC", "Playfair Display", serif;
-  --font-sans: "Noto Sans TC", "Georgia", serif;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-@keyframes background-pan {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-body,
-html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: var(--font-sans);
-  background: linear-gradient(
-    100deg,
-    #0d0c1d,
-    #35354e,
-    #5a5271,
-    #35354e,
-    #0d0c1d
-  );
-  background-size: 400% 400%;
-  animation: background-pan 45s ease-in-out infinite;
-  color: var(--text-color);
-  overflow-x: hidden;
-}
-
-#root {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-}
-
-.app-container {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between; /* Distribute space */
-  gap: 1rem; /* Reduced gap */
-  position: relative;
-  min-height: 90vh; /* Ensure it takes up most of the screen */
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.top-bar {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0;
-  margin-bottom: 1rem; /* Reduced margin */
-}
-
 .app-title {
   font-family: var(--font-serif);
   color: var(--accent-color);
@@ -201,15 +110,6 @@ html {
   width: 100%;
 }
 
-.app-header {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  width: 80%;
-}
-
 .app-header p {
   font-size: 1.5rem;
   line-height: 1.7;
@@ -320,16 +220,6 @@ html {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-.card-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  flex-grow: 1; /* Allow this to take up available space */
-  perspective: 1800px;
-  position: relative;
-}
-
 .card-fan {
   position: relative;
   width: 60vmin;
@@ -394,82 +284,6 @@ html {
   display: block;
 }
 
-@keyframes pulsate {
-  0% {
-    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 2vmin var(--accent-color),
-      0 0 3vmin var(--primary-color) inset;
-  }
-  50% {
-    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin var(--accent-color),
-      0 0 4vmin var(--primary-color) inset;
-  }
-  100% {
-    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 2vmin var(--accent-color),
-      0 0 3vmin var(--primary-color) inset;
-  }
-}
-
-.card.tapped {
-  transform: var(--center-transform) !important;
-  z-index: 100 !important;
-  animation: none;
-}
-
-.card.selected {
-  /* Keep the card centered during the animation */
-  transform: var(--center-transform) !important;
-  z-index: 100 !important;
-  /* The animation will be on the inner element, but we fade out the whole card */
-  animation: fade-out-card 0.2s forwards 0.8s; /* Fade out for 0.2s after 0.8s delay */
-}
-
-.card.selected .card-inner {
-  transform: rotateY(180deg);
-  transition: transform 0.8s ease-in-out;
-}
-
-@keyframes fade-out-card {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@keyframes fly-out {
-  0% {
-    transform: rotate(var(--start-rotate)) translateY(-20px) scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(calc(var(--start-rotate) + 20deg)) translateY(-100vh)
-      scale(0.4);
-    opacity: 0;
-  }
-}
-
-.card.revealed {
-  position: relative;
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-  animation: fadeIn 2s ease-out;
-  width: 90%;
-  max-width: 450px; /* Larger revealed card */
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 .card {
   background-color: var(--card-bg);
   border: 1px solid #f0e9e4;
@@ -514,20 +328,6 @@ html {
   margin: 0 0 1.5rem 0;
 }
 
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  flex-direction: column;
-}
-
 .loading-indicator {
   text-align: center;
   color: var(--accent-color);
@@ -566,18 +366,9 @@ html {
   line-height: 1.8;
 }
 
-.app-footer {
-  width: 100%;
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--secondary-color);
-}
-
-.how-it-works-switcher {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+.app-footer p {
+  font-size: 0.9rem;
+  color: var(--text-color);
 }
 
 .how-to-ask,
@@ -624,26 +415,6 @@ html {
 
 .how-to-ask li {
   margin-bottom: 0.5rem;
-}
-
-.app-footer p {
-  font-size: 0.9rem;
-  color: var(--text-color);
-}
-
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(92, 92, 92, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
 }
 
 .modal-content {
@@ -751,4 +522,8 @@ html {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.start-button {
+  margin-top: 2rem;
 }

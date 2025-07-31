@@ -1,0 +1,88 @@
+
+@keyframes background-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulsate {
+  0% {
+    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 2vmin var(--accent-color),
+      0 0 3vmin var(--primary-color) inset;
+  }
+  50% {
+    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 3vmin var(--accent-color),
+      0 0 4vmin var(--primary-color) inset;
+  }
+  100% {
+    box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.2), 0 0 2vmin var(--accent-color),
+      0 0 3vmin var(--primary-color) inset;
+  }
+}
+
+.card.tapped {
+  transform: var(--center-transform) !important;
+  z-index: 100 !important;
+  animation: none;
+}
+
+.card.selected {
+  /* Keep the card centered during the animation */
+  transform: var(--center-transform) !important;
+  z-index: 100 !important;
+  /* The animation will be on the inner element, but we fade out the whole card */
+  animation: fade-out-card 0.2s forwards 0.8s; /* Fade out for 0.2s after 0.8s delay */
+}
+
+.card.selected .card-inner {
+  transform: rotateY(180deg);
+  transition: transform 0.8s ease-in-out;
+}
+
+@keyframes fade-out-card {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes fly-out {
+  0% {
+    transform: rotate(var(--start-rotate)) translateY(-20px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(calc(var(--start-rotate) + 20deg)) translateY(-100vh)
+      scale(0.4);
+    opacity: 0;
+  }
+}
+
+.card.revealed {
+  position: relative;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  animation: fadeIn 2s ease-out;
+  width: 90%;
+  max-width: 450px; /* Larger revealed card */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

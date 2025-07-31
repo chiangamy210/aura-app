@@ -1,6 +1,8 @@
 {
   "translation": {
     "title": "靈光",
+    "introduction": "Aura 是你的智慧心靈小幫手，透過溫暖的語錄與 AI 解說，陪伴你找回內在的平靜與方向。無論此刻的你正經歷什麼，Aura 都在這裡，輕聲引導你走向更清明的自己。準備好了嗎？那我們出發囉。",
+    "start_button": "開始",
     "subtitle": "閉上雙眼... 讓一個問題，從你的心底緩緩升起。",
     "countdown": "...{{count}}",
     "draw_card": "抽一張卡",

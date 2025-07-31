@@ -1,6 +1,8 @@
 {
   "translation": {
     "title": "Aura",
+    "introduction": "Aura es tu compañera sabia y serena. A través de frases reconfortantes y explicaciones impulsadas por IA, te acompaña a reconectar con tu paz interior y encontrar claridad en cada paso. Sea cual sea el momento que estés viviendo, Aura está aquí para guiarte con suavidad. ¿Estás list@? Entonces, vamos allá.",
+    "start_button": "Empezar",
     "subtitle": "Cierra los ojos... y permite que una pregunta nazca desde lo profundo de tu corazón.",
     "countdown": "...{{count}}",
     "draw_card": "Saca una Carta",
