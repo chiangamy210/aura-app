@@ -197,7 +197,26 @@ function Home() {
   };
 
   const handleStartOver = () => {
-    window.location.reload();
+    // Reset all state to initial drawing sequence
+    setIsStart(true);
+    setShowSubtitle(true);
+    setCountdown(10);
+    setShowButtons(false);
+    setRevealedCard(null);
+    setSelectedCard(null);
+    setDrawnCardIndices([]);
+    setUserQuestion("");
+    setAiResponse("");
+    setIsLoading(false);
+    setSelectedFanCard(null);
+    setTappedCard(null);
+    setFlippedCard(null);
+
+    // Reshuffle cards
+    const indices = Array.from({ length: fanCardsCount }, (_, i) => i);
+    const shuffledIndices = indices.sort(() => 0.5 - Math.random());
+    setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
+    setFanVisible(false); // Hide fan before it reappears
   };
 
   const getCardFanStyles = (index: number) => {
