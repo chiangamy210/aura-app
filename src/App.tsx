@@ -346,7 +346,7 @@ function Home() {
                             opacity: flippedCard === cardIndex ? 1 : 0,
                             transition: "opacity 0.3s ease-in-out",
                           }}
-                          loading="eager" // Changed to eager as we are preloading
+                          loading="lazy" // Changed to eager as we are preloading
                         />
                       </div>
                     </div>
