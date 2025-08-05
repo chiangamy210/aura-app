@@ -49,6 +49,7 @@ function Home() {
   const [tappedCard, setTappedCard] = useState<number | null>(null);
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
   const [preloadingCard, setPreloadingCard] = useState<number | null>(null);
+  const [loadedImages, setLoadedImages] = useState(new Set<number>());
 
   const [showSubtitle, setShowSubtitle] = useState(false);
 
@@ -252,20 +253,38 @@ function Home() {
 
   const handleTap = (cardIndex: number) => {
     if (tappedCard === cardIndex) {
-      // Second tap: The card is already preloaded, so we can flip it.
-      setFlippedCard(cardIndex);
-      handleCardSelect(cardIndex);
-      setTappedCard(null);
+      // Second tap
+      if (loadedImages.has(cardIndex)) {
+        // Image is already loaded, flip immediately
+        setFlippedCard(cardIndex);
+        handleCardSelect(cardIndex);
+        setTappedCard(null);
+      } else {
+        // Image is not loaded yet, show spinner and wait
+        setPreloadingCard(cardIndex);
+      }
     } else {
-      // First tap: Preload the image before doing anything else.
+      // First tap
       setTappedCard(cardIndex);
-      setPreloadingCard(cardIndex);
-      const img = new Image();
-      img.src = quotes[cardIndex].image;
-      img.onload = () => {
-        // Image is loaded, now we can proceed.
-        setPreloadingCard(null);
-      };
+      // Preload the image in the background
+      if (!loadedImages.has(cardIndex)) {
+        const img = new Image();
+        img.src = quotes[cardIndex].image;
+        img.onload = () => {
+          setLoadedImages(new Set(loadedImages).add(cardIndex));
+          // If the user is still waiting on this card, flip it now
+          if (preloadingCard === cardIndex) {
+            setFlippedCard(cardIndex);
+            handleCardSelect(cardIndex);
+            setTappedCard(null);
+            setPreloadingCard(null);
+          }
+        };
+        img.onerror = () => {
+          console.error("Image failed to load:", img.src);
+          setPreloadingCard(null); // Stop showing spinner on error
+        };
+      }
     }
   };
 
@@ -345,12 +364,21 @@ function Home() {
                     key={cardIndex}
                     className={`card ${
                       selectedFanCard === cardIndex ? "selected" : ""
-                    } ${tappedCard === cardIndex ? "tapped" : ""}`}
+                    } ${tappedCard === cardIndex ? "tapped" : ""} ${
+                      preloadingCard === cardIndex ? "preloading" : ""
+                    }`}
                     style={getCardFanStyles(index)}
                     onClick={() => handleTap(cardIndex)}
                     onTouchEnd={(e) => handleTouchEnd(e, cardIndex)}
                   >
                     <div className="card-inner">
+                      {preloadingCard === cardIndex && (
+                        <div className="spinner-overlay">
+                          <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      )}
                       <div className="card-front">
                         <img
                           src="/img/back-min.png"
