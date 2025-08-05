@@ -37,7 +37,7 @@ function Home() {
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
   const [isStart, setIsStart] = useState(false);
-  const [countdown, setCountdown] = useState(1);
+  const [countdown, setCountdown] = useState(10);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
   const [userQuestion, setUserQuestion] = useState("");
   const [aiResponse, setAiResponse] = useState("");
@@ -347,12 +347,12 @@ function Home() {
                     >
                       {t("explain_more")}
                     </button>
-                    <button
+                    {/* <button
                       className="btn btn-success btn-sm"
                       onClick={() => handleSaveCard(cardIndex)}
                     >
                       Save Card
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               );
