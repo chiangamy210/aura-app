@@ -156,17 +156,17 @@ function Home() {
     setIsModalOpen(false);
   };
 
-  const handleSaveCard = (cardIndex: number) => {
-    const card = quotes[cardIndex];
-    if (card) {
-      // For now, we'll just log it to the console.
-      // You can replace this with your actual save logic, e.g., localStorage.
-      console.log("Saved Card:", card);
-      alert(`Card "${card.title}" saved!`);
-    } else {
-      console.log("Could not find card with index:", cardIndex);
-    }
-  };
+  // const handleSaveCard = (cardIndex: number) => {
+  //   const card = quotes[cardIndex];
+  //   if (card) {
+  //     // For now, we'll just log it to the console.
+  //     // You can replace this with your actual save logic, e.g., localStorage.
+  //     console.log("Saved Card:", card);
+  //     alert(`Card "${card.title}" saved!`);
+  //   } else {
+  //     console.log("Could not find card with index:", cardIndex);
+  //   }
+  // };
 
   const getExplanation = async (lang: string | null) => {
     if (!selectedCard || !userQuestion) {
