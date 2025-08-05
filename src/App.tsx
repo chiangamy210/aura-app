@@ -37,7 +37,7 @@ function Home() {
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
   const [isStart, setIsStart] = useState(false);
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(1);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
   const [userQuestion, setUserQuestion] = useState("");
   const [aiResponse, setAiResponse] = useState("");
@@ -48,6 +48,7 @@ function Home() {
 
   const [tappedCard, setTappedCard] = useState<number | null>(null);
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
+  const [preloadingCard, setPreloadingCard] = useState<number | null>(null);
 
   const [showSubtitle, setShowSubtitle] = useState(false);
 
@@ -154,6 +155,18 @@ function Home() {
     setIsModalOpen(false);
   };
 
+  const handleSaveCard = (cardIndex: number) => {
+    const card = quotes[cardIndex];
+    if (card) {
+      // For now, we'll just log it to the console.
+      // You can replace this with your actual save logic, e.g., localStorage.
+      console.log("Saved Card:", card);
+      alert(`Card "${card.title}" saved!`);
+    } else {
+      console.log("Could not find card with index:", cardIndex);
+    }
+  };
+
   const getExplanation = async (lang: string | null) => {
     if (!selectedCard || !userQuestion) {
       console.error("selectedCard or userQuestion is null");
@@ -239,13 +252,20 @@ function Home() {
 
   const handleTap = (cardIndex: number) => {
     if (tappedCard === cardIndex) {
-      // Second tap
+      // Second tap: The card is already preloaded, so we can flip it.
       setFlippedCard(cardIndex);
       handleCardSelect(cardIndex);
       setTappedCard(null);
     } else {
-      // First tap
+      // First tap: Preload the image before doing anything else.
       setTappedCard(cardIndex);
+      setPreloadingCard(cardIndex);
+      const img = new Image();
+      img.src = quotes[cardIndex].image;
+      img.onload = () => {
+        // Image is loaded, now we can proceed.
+        setPreloadingCard(null);
+      };
     }
   };
 
@@ -307,6 +327,12 @@ function Home() {
                       onClick={() => handleExplainClick(card)}
                     >
                       {t("explain_more")}
+                    </button>
+                    <button
+                      className="btn btn-success btn-sm"
+                      onClick={() => handleSaveCard(cardIndex)}
+                    >
+                      Save Card
                     </button>
                   </div>
                 </div>
