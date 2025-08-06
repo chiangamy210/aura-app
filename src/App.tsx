@@ -37,7 +37,7 @@ function Home() {
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
   const [isStart, setIsStart] = useState(false);
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(1);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
   const [userQuestion, setUserQuestion] = useState("");
   const [aiResponse, setAiResponse] = useState("");
@@ -156,17 +156,17 @@ function Home() {
     setIsModalOpen(false);
   };
 
-  // const handleSaveCard = (cardIndex: number) => {
-  //   const card = quotes[cardIndex];
-  //   if (card) {
-  //     // For now, we'll just log it to the console.
-  //     // You can replace this with your actual save logic, e.g., localStorage.
-  //     console.log("Saved Card:", card);
-  //     alert(`Card "${card.title}" saved!`);
-  //   } else {
-  //     console.log("Could not find card with index:", cardIndex);
-  //   }
-  // };
+  const handleSaveCard = (cardIndex: number) => {
+    const card = quotes[cardIndex];
+    if (card) {
+      // For now, we'll just log it to the console.
+      // You can replace this with your actual save logic, e.g., localStorage.
+      console.log("Saved Card:", card);
+      alert(`Card "${card.title}" saved!`);
+    } else {
+      console.log("Could not find card with index:", cardIndex);
+    }
+  };
 
   const getExplanation = async (lang: string | null) => {
     if (!selectedCard || !userQuestion) {
@@ -347,12 +347,12 @@ function Home() {
                     >
                       {t("explain_more")}
                     </button>
-                    {/* <button
+                    <button
                       className="btn btn-success btn-sm"
                       onClick={() => handleSaveCard(cardIndex)}
                     >
                       Save Card
-                    </button> */}
+                    </button>
                   </div>
                 </div>
               );
