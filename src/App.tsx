@@ -1,4 +1,3 @@
-import { getFirestore, doc, setDoc } from "firebase/firestore";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +12,7 @@ import {
 import HowAuraWorks from "./HowAuraWorks";
 import HowToAsk from "./HowToAsk";
 import Login from "./Login";
-import { auth, db } from "./firebase";
+import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
 import "./styles/base.css";
@@ -37,7 +36,7 @@ const quoteModules = {
   "zh-TW": () => import("./quotes.zh-TW.json"),
 };
 
-function Home({ db, handleSaveCard }: { db: any, handleSaveCard: any }) {
+function Home({ handleSaveCard }: { handleSaveCard: any }) {
   const { t, i18n } = useTranslation();
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
@@ -160,8 +159,6 @@ function Home({ db, handleSaveCard }: { db: any, handleSaveCard: any }) {
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
-
-  
 
   const getExplanation = async (lang: string | null) => {
     if (!selectedCard || !userQuestion) {
@@ -345,7 +342,7 @@ function Home({ db, handleSaveCard }: { db: any, handleSaveCard: any }) {
                     <button
                       id="save-card-button"
                       className="btn btn-success btn-sm"
-                      onClick={() => handleSaveCard(cardIndex)}
+                      onClick={() => handleSaveCard()}
                     >
                       Save Card
                     </button>
@@ -486,20 +483,23 @@ function App() {
     auth.signOut();
   };
 
-  const handleSaveCard = (cardIndex: number) => {
+  const handleSaveCard = () => {
     if (!user) {
       setIsLoginModalOpen(true);
     } else {
-      // The actual save logic is in the Home component, 
+      // The actual save logic is in the Home component,
       // but we need to trigger it from here if the user is already logged in.
       // This is a bit of a workaround for the current structure.
       // A better solution would be to lift the state up or use a state manager.
-      const saveButton = document.getElementById("save-card-button") as HTMLButtonElement;
+
+      const saveButton = document.getElementById(
+        "save-card-button"
+      ) as HTMLButtonElement;
       if (saveButton) {
         saveButton.click();
       }
     }
-  }
+  };
 
   return (
     <Router>
@@ -550,12 +550,17 @@ function App() {
         </div>
 
         <Routes>
-          <Route path="/" element={<Home db={db} handleSaveCard={handleSaveCard} />} />
+          <Route
+            path="/"
+            element={<Home handleSaveCard={handleSaveCard} />}
+          />
           <Route path="/how-aura-works" element={<HowAuraWorks />} />
           <Route path="/how-to-ask" element={<HowToAsk />} />
         </Routes>
 
-        {isLoginModalOpen && <Login onClose={() => setIsLoginModalOpen(false)} />}
+        {isLoginModalOpen && (
+          <Login onClose={() => setIsLoginModalOpen(false)} />
+        )}
 
         <footer className="app-footer">
           <p>{t("footer_text")}</p>
