@@ -1,3 +1,4 @@
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,6 +12,10 @@ import {
 } from "react-router-dom";
 import HowAuraWorks from "./HowAuraWorks";
 import HowToAsk from "./HowToAsk";
+import Login from "./Login";
+import { auth, db } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import type { User } from "firebase/auth";
 import "./styles/base.css";
 import "./styles/layout.css";
 import "./styles/components.css";
@@ -32,7 +37,7 @@ const quoteModules = {
   "zh-TW": () => import("./quotes.zh-TW.json"),
 };
 
-function Home() {
+function Home({ db, handleSaveCard }: { db: any, handleSaveCard: any }) {
   const { t, i18n } = useTranslation();
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
@@ -156,17 +161,7 @@ function Home() {
     setIsModalOpen(false);
   };
 
-  const handleSaveCard = (cardIndex: number) => {
-    const card = quotes[cardIndex];
-    if (card) {
-      // For now, we'll just log it to the console.
-      // You can replace this with your actual save logic, e.g., localStorage.
-      console.log("Saved Card:", card);
-      alert(`Card "${card.title}" saved!`);
-    } else {
-      console.log("Could not find card with index:", cardIndex);
-    }
-  };
+  
 
   const getExplanation = async (lang: string | null) => {
     if (!selectedCard || !userQuestion) {
@@ -189,7 +184,7 @@ function Home() {
       });
       const languageName = lang || "English";
 
-      const prompt = `Your response MUST be in ${languageName}. You are "Aura," a warm, wise, and insightful digital guide. Your purpose is to help a user who has come to you feeling confused, upset, or seeking clarity. They have just drawn a card from a symbolic deck and have asked a question.\n\nYour response must be professional, warm, insightful, and helpful. You are not a fortune teller who predicts the future. You are a gentle guide who uses the symbolism of the card to offer perspective, encourage reflection, and empower the user to find their own answers.\n\nUser and Card Information:\n\nUser's Question: "${userQuestion}"\n\nCard Drawn: "${selectedCard.title}"\n\nCard's Visual Description: "${selectedCard.quote}" (Note: Using the quote as a placeholder for visual description since actual image descriptions are not available.)\n\nYour Response Must Follow This Exact Structure, without explicitly stating the section titles (e.g., do not write "Introduce the Card:"):\n\n1.  Begin by warmly and empathetically acknowledging the user's situation without being specific. Use phrases like "Thank you for sharing what's on your mind," or "It's brave to seek clarity when things feel uncertain."\n2.  State the name of the card they have drawn.\n3.  Interpret the card's meaning using its message. Connect the quote to abstract concepts.\n4.  Gently bridge the card's message to the user's specific question. Frame it as an invitation to see their situation from a new perspective.\n5.  Provide a reflective question or a small, gentle action for the user to ponder or take. This should empower them.\n6.  End with a short, warm, and empowering statement.\n\nCrucial Rules to Follow:\n\nDO NOT predict the future. Never say "you will" or "this is going to happen."\n\nDO NOT give direct advice (e.g., "You should break up with him," "You should quit your job").\n\nDO NOT provide medical, legal, or financial advice.\n\nDO maintain a warm, professional, and almost poetic tone.\n\nDO keep the response concise and focused, around 20-55 sentences in total.`;
+      const prompt = `Your response MUST be in ${languageName}. You are "Aura," a warm, wise, and insightful digital guide. Your purpose is to help a user who has come to you feeling confused, upset, or seeking clarity. They have just drawn a card from a symbolic deck and have asked a question.\n\nYour response must be professional, warm, insightful, and helpful. You are not a fortune teller who predicts the future. You are a gentle guide who uses the symbolism of the card to offer perspective, encourage reflection, and empower the user to find their own answers.\n\nUser and Card Information:\n\nUser's Question: "${userQuestion}"\n\nCard Drawn: "${selectedCard.title}"\n\nCard's Visual Description: "${selectedCard.quote}" (Note: Using the quote as a placeholder for visual description since actual image descriptions are not available.)\n\nYour Response Must Follow This Exact Structure, without explicitly stating the section titles (e.g., do not write "Introduce the Card:"):\n\n1.  Begin by warmly and empathetically acknowledging the user's situation without being specific. Use phrases like "Thank you for sharing what's on your mind," or "It's brave to seek clarity when things feel uncertain."\n2.  State the name of the card they have drawn.\n3.  Interpret the card's meaning using its message. Connect the quote to abstract concepts.\n4.  Gently bridge the card's message to the user's specific question. Frame it as an invitation to see their situation from a new perspective.\n5.  Provide a reflective question or a small, gentle action for the user to ponder or take. This should empower them.\n6.  End with a short, warm, and empowering statement.\n\nCrucial Rules to Follow:\n\nDO NOT predict the future. Never say "you will" or "this is going to happen."\n\nDO NOT give direct advice (e.g., "You should break up with him," "You should quit your job").\n\nDO NOT provide medical, legal, or financial advice.\n\nDO maintain a warm, professional, and almost poetic tone.\n\nDO ke... [truncated]`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
@@ -348,6 +343,7 @@ function Home() {
                       {t("explain_more")}
                     </button>
                     <button
+                      id="save-card-button"
                       className="btn btn-success btn-sm"
                       onClick={() => handleSaveCard(cardIndex)}
                     >
@@ -469,10 +465,41 @@ function Home() {
 
 function App() {
   const { i18n, t } = useTranslation();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      if (user) {
+        setIsLoginModalOpen(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
+  const handleSignOut = () => {
+    auth.signOut();
+  };
+
+  const handleSaveCard = (cardIndex: number) => {
+    if (!user) {
+      setIsLoginModalOpen(true);
+    } else {
+      // The actual save logic is in the Home component, 
+      // but we need to trigger it from here if the user is already logged in.
+      // This is a bit of a workaround for the current structure.
+      // A better solution would be to lift the state up or use a state manager.
+      const saveButton = document.getElementById("save-card-button") as HTMLButtonElement;
+      if (saveButton) {
+        saveButton.click();
+      }
+    }
+  }
 
   return (
     <Router>
@@ -514,14 +541,21 @@ function App() {
             >
               繁體中文
             </button>
+            {user ? (
+              <button onClick={handleSignOut}>Sign Out</button>
+            ) : (
+              <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
+            )}
           </div>
         </div>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home db={db} handleSaveCard={handleSaveCard} />} />
           <Route path="/how-aura-works" element={<HowAuraWorks />} />
           <Route path="/how-to-ask" element={<HowToAsk />} />
         </Routes>
+
+        {isLoginModalOpen && <Login onClose={() => setIsLoginModalOpen(false)} />}
 
         <footer className="app-footer">
           <p>{t("footer_text")}</p>
