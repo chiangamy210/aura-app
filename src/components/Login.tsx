@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { auth } from './firebase';
+import { auth } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login = ({ onClose }: { onClose: () => void }) => {

@@ -527,3 +527,63 @@
 .start-button {
   margin-top: 2rem;
 }
+
+.login-btn {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #9a7fbf;
+}
+
+.user-menu-container {
+  position: relative;
+}
+
+.user-menu-trigger {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  z-index: 100;
+}
+
+.user-menu button {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-menu button:hover {
+  background-color: var(--primary-color);
+}

@@ -33,9 +33,27 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
   padding: 1rem 0;
   margin-bottom: 1rem; /* Reduced margin */
+  gap: 1rem;
+}
+
+.top-bar-left {
+  flex: 1;
+}
+
+.top-bar-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.top-bar-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
 }
 
 .app-header {
@@ -97,6 +115,19 @@
   gap: 1.5rem;
   padding: 1rem;
   max-width: 100%;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 600px) {

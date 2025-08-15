@@ -9,10 +9,11 @@ import {
   Link,
   NavLink,
 } from "react-router-dom";
-import HowAuraWorks from "./HowAuraWorks";
-import HowToAsk from "./HowToAsk";
-import Login from "./Login";
-import { auth } from "./firebase";
+import HowAuraWorks from "./components/HowAuraWorks";
+import HowToAsk from "./components/HowToAsk";
+import Login from "./components/Login";
+import SavedCards from "./components/SavedCards";
+import { auth, saveCard } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
 import "./styles/base.css";
@@ -27,7 +28,6 @@ interface Quote {
 }
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-console.log("Gemini API Key being used:", API_KEY); // Added for debugging
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const quoteModules = {
@@ -130,7 +130,6 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
   const handleIntroduction = () => {
     setIsStart(true);
     setShowSubtitle(true);
-    console.log("isStart");
   };
 
   const handleCardSelect = (cardIndex: number) => {
@@ -328,7 +327,7 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
                     src={card.image}
                     className="card-img-top"
                     alt={`Aura guidance card: ${card.title}`}
-                    loading="lazy"
+                    loading="eager"
                   />
                   <div className="card-body">
                     <h5 className="card-title">{card.title}</h5>
@@ -342,7 +341,7 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
                     <button
                       id="save-card-button"
                       className="btn btn-success btn-sm"
-                      onClick={() => handleSaveCard()}
+                      onClick={() => handleSaveCard(card, cardIndex)}
                     >
                       Save Card
                     </button>
@@ -464,6 +463,7 @@ function App() {
   const { i18n, t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -481,23 +481,15 @@ function App() {
 
   const handleSignOut = () => {
     auth.signOut();
+    setIsUserMenuOpen(false);
   };
 
-  const handleSaveCard = () => {
+  const handleSaveCard = (card: Quote, cardIndex: number) => {
     if (!user) {
       setIsLoginModalOpen(true);
     } else {
-      // The actual save logic is in the Home component,
-      // but we need to trigger it from here if the user is already logged in.
-      // This is a bit of a workaround for the current structure.
-      // A better solution would be to lift the state up or use a state manager.
-
-      const saveButton = document.getElementById(
-        "save-card-button"
-      ) as HTMLButtonElement;
-      if (saveButton) {
-        saveButton.click();
-      }
+      const cardToSave = { ...card, id: cardIndex.toString() };
+      saveCard(user.uid, cardToSave);
     }
   };
 
@@ -505,57 +497,82 @@ function App() {
     <Router>
       <div className="app-container">
         <div className="top-bar">
-          <Link to="/" className="app-title-link">
-            <h1 className="app-title">Aura</h1>
-          </Link>
-          <div className="how-it-works-switcher">
-            <NavLink
-              to="/how-aura-works"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              {t("how_aura_works")}
-            </NavLink>
-            <NavLink
-              to="/how-to-ask"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              {t("how_to_ask")}
-            </NavLink>
+          <div className="top-bar-left">
+            <Link to="/" className="app-title-link">
+              <h1 className="app-title">Aura</h1>
+            </Link>
           </div>
-          <div className="language-switcher">
-            <button
-              onClick={() => changeLanguage("en")}
-              className={i18n.language === "en" ? "active" : ""}
-            >
-              English
-            </button>
-            <button
-              onClick={() => changeLanguage("es")}
-              className={i18n.language === "es" ? "active" : ""}
-            >
-              Español
-            </button>
-            <button
-              onClick={() => changeLanguage("zh-TW")}
-              className={i18n.language === "zh-TW" ? "active" : ""}
-            >
-              繁體中文
-            </button>
-            {user ? (
-              <button onClick={handleSignOut}>Sign Out</button>
-            ) : (
-              <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
-            )}
+          <div className="top-bar-center">
+            <div className="how-it-works-switcher">
+              <NavLink
+                to="/how-aura-works"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                {t("how_aura_works")}
+              </NavLink>
+              <NavLink
+                to="/how-to-ask"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                {t("how_to_ask")}
+              </NavLink>
+              <NavLink
+                to="/saved-cards"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                {t("saved_cards")}
+              </NavLink>
+            </div>
+          </div>
+          <div className="top-bar-right">
+            <div className="language-switcher">
+              <button
+                onClick={() => changeLanguage("en")}
+                className={i18n.language === "en" ? "active" : ""}
+              >
+                English
+              </button>
+              <button
+                onClick={() => changeLanguage("es")}
+                className={i18n.language === "es" ? "active" : ""}
+              >
+                Español
+              </button>
+              <button
+                onClick={() => changeLanguage("zh-TW")}
+                className={i18n.language === "zh-TW" ? "active" : ""}
+              >
+                繁體中文
+              </button>
+            </div>
+            <div className="user-actions">
+              {user ? (
+                <div className="user-menu-container">
+                  <button className="user-menu-trigger" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>{user.email}</span>
+                  </button>
+                  {isUserMenuOpen && (
+                    <div className="user-menu">
+                      <button onClick={handleSignOut}>Sign Out</button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button className="login-btn" onClick={() => setIsLoginModalOpen(true)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <span>Login</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         <Routes>
-          <Route
-            path="/"
-            element={<Home handleSaveCard={handleSaveCard} />}
-          />
+          <Route path="/" element={<Home handleSaveCard={handleSaveCard} />} />
           <Route path="/how-aura-works" element={<HowAuraWorks />} />
           <Route path="/how-to-ask" element={<HowToAsk />} />
+          <Route path="/saved-cards" element={<SavedCards />} />
         </Routes>
 
         {isLoginModalOpen && (
