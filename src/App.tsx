@@ -341,7 +341,7 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
                     <button
                       id="save-card-button"
                       className="btn btn-success btn-sm"
-                      onClick={() => handleSaveCard(card, cardIndex)}
+                      onClick={(e) => handleSaveCard(card, cardIndex, aiResponse, e)}
                     >
                       Save Card
                     </button>
@@ -484,12 +484,13 @@ function App() {
     setIsUserMenuOpen(false);
   };
 
-  const handleSaveCard = (card: Quote, cardIndex: number) => {
+  const handleSaveCard = (card: Quote, cardIndex: number, aiResponse: string, e) => {
     if (!user) {
       setIsLoginModalOpen(true);
     } else {
-      const cardToSave = { ...card, id: cardIndex.toString() };
+      const cardToSave = { ...card, id: cardIndex.toString(), time: new Date().toISOString(), ai_reply: aiResponse };
       saveCard(user.uid, cardToSave);
+      console.log(e);
     }
   };
 
@@ -548,8 +549,24 @@ function App() {
             <div className="user-actions">
               {user ? (
                 <div className="user-menu-container">
-                  <button className="user-menu-trigger" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <button
+                    className="user-menu-trigger"
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
                     <span>{user.email}</span>
                   </button>
                   {isUserMenuOpen && (
@@ -559,8 +576,24 @@ function App() {
                   )}
                 </div>
               ) : (
-                <button className="login-btn" onClick={() => setIsLoginModalOpen(true)}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <button
+                  className="login-btn"
+                  onClick={() => setIsLoginModalOpen(true)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
                   <span>Login</span>
                 </button>
               )}

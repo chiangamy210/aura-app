@@ -584,6 +584,111 @@
   transition: background-color 0.3s ease;
 }
 
+.saved-cards-grid {
+  display: grid;
+  gap: 1rem;
+  /* Start with a base of 1 column on small screens */
+  grid-template-columns: 1fr;
+}
+
+/* For tablets and larger */
+@media (min-width: 600px) {
+  .saved-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For small desktops and larger */
+@media (min-width: 900px) {
+  .saved-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* For medium desktops and larger */
+@media (min-width: 1200px) {
+  .saved-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* For large desktops and larger */
+@media (min-width: 1500px) {
+  .saved-cards-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* For extra large desktops */
+@media (min-width: 1800px) {
+  .saved-cards-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.card-preview {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  height: 400px; /* Fixed height for all cards */
+}
+
+.card-preview-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-preview:hover .card-preview-overlay {
+  opacity: 1;
+}
+
+.card-preview-timestamp {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.card-preview:hover {
+  transform: scale(1.05);
+}
+
+.card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .saved-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.75rem;
+  }
+  .card-preview {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .saved-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .card-preview {
+    height: auto; /* Auto height for single column on mobile */
+  }
+}
+
 .user-menu button:hover {
   background-color: var(--primary-color);
 }

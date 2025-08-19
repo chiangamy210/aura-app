@@ -1,19 +1,25 @@
-import { useState, useEffect } from 'react';
-import { auth, getSavedCards } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import type { User } from 'firebase/auth';
+import { useState, useEffect } from "react";
+import { auth, getSavedCards, deleteCard } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import type { User } from "firebase/auth";
 
 interface Card {
   id: string;
   title: string;
   quote: string;
   image: string;
+  time: string;
+  ai_reply: string;
 }
 
 const SavedCards = () => {
   const [user, setUser] = useState<User | null>(null);
   const [savedCards, setSavedCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -28,7 +34,8 @@ const SavedCards = () => {
       setLoading(true);
       getSavedCards(user.uid)
         .then((cards) => {
-          setSavedCards(cards);
+          const sortedCards = cards.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+          setSavedCards(sortedCards);
           setLoading(false);
         })
         .catch((error) => {
@@ -39,6 +46,25 @@ const SavedCards = () => {
       setSavedCards([]); // Clear cards if user logs out
     }
   }, [user]);
+
+  const handleDelete = async () => {
+    if (user && cardToDelete) {
+      await deleteCard(user.uid, cardToDelete);
+      setSavedCards(savedCards.filter((card) => card.id !== cardToDelete));
+      setShowConfirmDialog(false);
+      setCardToDelete(null);
+    }
+  };
+
+  const openModal = (card: Card) => {
+    setSelectedCard(card);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedCard(null);
+    setShowModal(false);
+  };
 
   if (loading) {
     return <p>Loading saved cards...</p>;
@@ -56,14 +82,53 @@ const SavedCards = () => {
       ) : (
         <div className="saved-cards-grid">
           {savedCards.map((card) => (
-            <div className="card" key={card.id}>
-              <img src={card.image} className="card-img-top" alt={card.title} />
-              <div className="card-body">
-                <h5 className="card-title">{card.title}</h5>
-                <p className="card-text">{card.quote}</p>
+            <div className="card-preview" key={card.id} onClick={() => openModal(card)}>
+              <img src={card.image} alt={card.title} />
+              <div className="card-preview-overlay">
+                <p className="card-preview-timestamp">{new Date(card.time).toLocaleDateString()}</p>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {showModal && selectedCard && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <img src={selectedCard.image} className="card-img-top" alt={selectedCard.title} />
+            <div className="card-body">
+              <h5 className="card-title">{selectedCard.title}</h5>
+              <p className="card-text">{selectedCard.quote}</p>
+              <p className="card-text"><small className="text-muted">Saved on: {new Date(selectedCard.time).toLocaleString()}</small></p>
+              {selectedCard.ai_reply && <p className="card-text">AI Response: {selectedCard.ai_reply}</p>}
+              <button className="btn btn-danger btn-sm" onClick={() => {
+                setShowConfirmDialog(true);
+                setCardToDelete(selectedCard.id);
+                closeModal();
+              }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showConfirmDialog && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Are you sure you want to delete this card?</h3>
+            <div className="modal-buttons">
+              <button className="btn btn-danger" onClick={handleDelete}>
+                Delete
+              </button>
+              <button className="btn btn-secondary" onClick={() => {
+                setShowConfirmDialog(false);
+                setCardToDelete(null);
+              }}>
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

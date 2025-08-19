@@ -1,0 +1,49 @@
+.saved-cards-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.accordion {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  background-color: #f7f7f7;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-title:hover {
+  background-color: #eee;
+}
+
+.accordion-title h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.accordion-title p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.accordion-content {
+  padding: 15px;
+  border-top: 1px solid #ddd;
+}
