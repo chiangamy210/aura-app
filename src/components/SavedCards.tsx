@@ -20,6 +20,9 @@ const SavedCards = () => {
   const [cardToDelete, setCardToDelete] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [groupedCards, setGroupedCards] = useState<{ [key: string]: Card[] }>(
+    {}
+  );
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,8 +37,11 @@ const SavedCards = () => {
       setLoading(true);
       getSavedCards(user.uid)
         .then((cards) => {
-          const sortedCards = cards.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+          const sortedCards = cards.sort(
+            (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
+          );
           setSavedCards(sortedCards);
+          setGroupedCards(groupCardsByDate(sortedCards));
           setLoading(false);
         })
         .catch((error) => {
@@ -44,6 +50,7 @@ const SavedCards = () => {
         });
     } else {
       setSavedCards([]); // Clear cards if user logs out
+      setGroupedCards({});
     }
   }, [user]);
 
@@ -66,6 +73,18 @@ const SavedCards = () => {
     setShowModal(false);
   };
 
+  const groupCardsByDate = (cards: Card[]) => {
+    const groupedCards: { [key: string]: Card[] } = {};
+    cards.forEach((card) => {
+      const date = new Date(card.time).toLocaleDateString();
+      if (!groupedCards[date]) {
+        groupedCards[date] = [];
+      }
+      groupedCards[date].push(card);
+    });
+    return groupedCards;
+  };
+
   if (loading) {
     return <p>Loading saved cards...</p>;
   }
@@ -80,32 +99,56 @@ const SavedCards = () => {
       {savedCards.length === 0 ? (
         <p>You have no saved cards.</p>
       ) : (
-        <div className="saved-cards-grid">
-          {savedCards.map((card) => (
-            <div className="card-preview" key={card.id} onClick={() => openModal(card)}>
-              <img src={card.image} alt={card.title} />
-              <div className="card-preview-overlay">
-                <p className="card-preview-timestamp">{new Date(card.time).toLocaleDateString()}</p>
+        <>
+          {Object.keys(groupedCards).map((date) => (
+            <div key={date}>
+              <h2>{date}</h2>
+              <div className="saved-cards-grid">
+                {groupedCards[date].map((card) => (
+                  <div
+                    className="card-preview"
+                    key={card.id}
+                    onClick={() => openModal(card)}
+                  >
+                    <img src={card.image} alt={card.title} />
+                    <div className="card-preview-overlay">
+                      <p className="card-preview-title">{card.title}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))}
-        </div>
+        </>
       )}
 
       {showModal && selectedCard && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={selectedCard.image} className="card-img-top" alt={selectedCard.title} />
+            <img
+              src={selectedCard.image}
+              className="card-img-top"
+              alt={selectedCard.title}
+            />
             <div className="card-body">
               <h5 className="card-title">{selectedCard.title}</h5>
               <p className="card-text">{selectedCard.quote}</p>
-              <p className="card-text"><small className="text-muted">Saved on: {new Date(selectedCard.time).toLocaleString()}</small></p>
-              {selectedCard.ai_reply && <p className="card-text">AI Response: {selectedCard.ai_reply}</p>}
-              <button className="btn btn-danger btn-sm" onClick={() => {
-                setShowConfirmDialog(true);
-                setCardToDelete(selectedCard.id);
-                closeModal();
-              }}>
+              <p className="card-text">
+                <small className="text-muted">
+                  Saved on: {new Date(selectedCard.time).toLocaleString()}
+                </small>
+              </p>
+              {selectedCard.ai_reply && (
+                <p className="card-text">{selectedCard.ai_reply}</p>
+              )}
+              <button
+                className="btn btn-danger btn-sm"
+                onClick={() => {
+                  setShowConfirmDialog(true);
+                  setCardToDelete(selectedCard.id);
+                  closeModal();
+                }}
+              >
                 Delete
               </button>
             </div>
@@ -121,10 +164,13 @@ const SavedCards = () => {
               <button className="btn btn-danger" onClick={handleDelete}>
                 Delete
               </button>
-              <button className="btn btn-secondary" onClick={() => {
-                setShowConfirmDialog(false);
-                setCardToDelete(null);
-              }}>
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  setShowConfirmDialog(false);
+                  setCardToDelete(null);
+                }}
+              >
                 Cancel
               </button>
             </div>

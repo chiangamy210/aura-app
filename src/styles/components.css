@@ -326,6 +326,7 @@
   line-height: 1.8;
   color: var(--text-color);
   margin: 0 0 1.5rem 0;
+  overflow-y: auto;
 }
 
 .loading-indicator {
@@ -426,6 +427,8 @@
   max-width: 500px;
   width: 90%;
   border: 1px solid var(--primary-color);
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .modal-content h3 {
@@ -653,7 +656,7 @@
   opacity: 1;
 }
 
-.card-preview-timestamp {
+.card-preview-title {
   margin: 0;
   font-size: 0.8rem;
 }
