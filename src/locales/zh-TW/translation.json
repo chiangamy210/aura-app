@@ -49,7 +49,13 @@
     "how_to_ask_example1": "關於我的事業，您目前能給我什麼建議？",
     "how_to_ask_example2": "關於我目前在感情關係中遇到的挑戰，我需要了解什麼？",
     "how_to_ask_example3": "我現在應該專注於個人成長的哪個方面？",
-    "saved_cards": "已儲存的卡片",
-    "saved_cards_title": "您已儲存的卡片"
+    "saved_cards": "我的收藏",
+    "save_card": "保存卡片",
+    "card_saved": "已保存卡片",
+    "card_saved_notice": "卡片已保存到您的收藏中！",
+    "delete": "刪除",
+    "confirm_delete": "您確定要刪除這張卡片嗎？",
+    "cancel": "取消",
+    "saved_cards_title": "我已儲存的卡片"
   }
 }

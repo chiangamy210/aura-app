@@ -1,3 +1,16 @@
+#introduction {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+#introduction p {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0.8;
+  transition: opacity 0.5s ease-out;
+}
+
 .app-title {
   font-family: var(--font-serif);
   color: var(--accent-color);
@@ -189,8 +202,21 @@
   transition: 0.5s;
 }
 
-.btn-secondary:hover {
-  background-position: right center; /* change the direction of the change here */
+.btn-danger {
+  background-image: linear-gradient(
+    to right,
+    var(--secondary-color) 0%,
+    #5c5470 51%,
+    var(--secondary-color) 100%
+  );
+  background-size: 200% auto;
+  border: none;
+  color: white;
+  transition: 0.5s;
+}
+
+.btn-danger:hover {
+  background-position: right center;
   color: #fff;
   text-decoration: none;
   transform: translateY(-3px);
@@ -218,6 +244,35 @@
   text-decoration: none;
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.btn-success {
+  background-image: linear-gradient(
+    to right,
+    var(--accent-color) 0%,
+    #9a7fbf 51%,
+    var(--accent-color) 100%
+  );
+  background-size: 200% auto;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 700;
+  transition: 0.5s;
+}
+
+.btn-success:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(179, 157, 219, 0.5);
+}
+
+.btn-saved {
+  background-color: #9a7fbf;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 700;
 }
 
 .card-fan {
@@ -428,7 +483,9 @@
   width: 90%;
   border: 1px solid var(--primary-color);
   max-height: 80vh;
-  overflow-y: auto;
+  /* Deprecated, but only way to get overlay scrollbars */
+  overflow-y: overlay;
+  padding-right: 15px;
 }
 
 .modal-content h3 {
@@ -663,6 +720,7 @@
 
 .card-preview:hover {
   transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .card-preview img {
@@ -694,4 +752,60 @@
 
 .user-menu button:hover {
   background-color: var(--primary-color);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  /* background: var(--primary-color); */
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9a7fbf;
+}
+
+.save-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.save-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.card-timestamp {
+  position: absolute;
+  top: 85%;
+  right: 5%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .card-timestamp {
+    font-size: 0.7rem;
+  }
 }

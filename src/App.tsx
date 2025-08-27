@@ -36,7 +36,7 @@ const quoteModules = {
   "zh-TW": () => import("./quotes.zh-TW.json"),
 };
 
-function Home({ handleSaveCard }: { handleSaveCard: any }) {
+function Home({ handleSaveCard, isCardSaved, resetCardSaved }: { handleSaveCard: any, isCardSaved: boolean, resetCardSaved: any }) {
   const { t, i18n } = useTranslation();
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
@@ -127,10 +127,13 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
     }
   }, [i18n.language, selectedCard, userQuestion]);
 
-  const handleIntroduction = () => {
-    setIsStart(true);
-    setShowSubtitle(true);
-  };
+  useEffect(() => {
+    if (revealedCard !== null) {
+      resetCardSaved();
+    }
+  }, [revealedCard]);
+
+  
 
   const handleCardSelect = (cardIndex: number) => {
     setSelectedFanCard(cardIndex);
@@ -216,6 +219,7 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
     setSelectedFanCard(null);
     setTappedCard(null);
     setFlippedCard(null);
+    resetCardSaved();
 
     // Reshuffle cards
     const indices = Array.from({ length: fanCardsCount }, (_, i) => i);
@@ -223,6 +227,8 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
     setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
     setFanVisible(false); // Hide fan before it reappears
   };
+
+  
 
   const getCardFanStyles = (index: number) => {
     const cardsCount = fanCardIndices.length;
@@ -289,10 +295,12 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
       <header className="app-header">
         {!isStart && (
           <div className="introduction-container">
-            <p>{t("introduction")}</p>
+            <div id="introduction">
+              <p>{t("introduction")}</p>
+            </div>
             <button
               className="btn btn-primary start-button"
-              onClick={handleIntroduction}
+              onClick={() => setIsStart(true)}
             >
               {t("start_button")}
             </button>
@@ -340,10 +348,30 @@ function Home({ handleSaveCard }: { handleSaveCard: any }) {
                     </button>
                     <button
                       id="save-card-button"
-                      className="btn btn-success btn-sm"
+                      className={`btn ${isCardSaved ? 'btn-saved' : 'btn-success'} btn-sm`}
                       onClick={(e) => handleSaveCard(card, cardIndex, aiResponse, e)}
+                      disabled={isCardSaved}
                     >
-                      Save Card
+                      {isCardSaved ? (
+                        <>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="bi bi-bookmark-check-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"
+                            />
+                          </svg>
+                          <span style={{ marginLeft: '8px' }}>{t('card_saved')}</span>
+                        </>
+                      ) : (
+                        t('save_card')
+                      )}
                     </button>
                   </div>
                 </div>
@@ -464,6 +492,12 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [showSaveNotice, setShowSaveNotice] = useState(false);
+  const [isCardSaved, setIsCardSaved] = useState(false);
+
+  const resetCardSaved = () => {
+    setIsCardSaved(false);
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -474,6 +508,15 @@ function App() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (showSaveNotice) {
+      const timer = setTimeout(() => {
+        setShowSaveNotice(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSaveNotice]);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -490,7 +533,8 @@ function App() {
     } else {
       const cardToSave = { ...card, id: cardIndex.toString(), time: new Date().toISOString(), ai_reply: aiResponse };
       saveCard(user.uid, cardToSave);
-      console.log(e);
+      setShowSaveNotice(true);
+      setIsCardSaved(true);
     }
   };
 
@@ -602,7 +646,7 @@ function App() {
         </div>
 
         <Routes>
-          <Route path="/" element={<Home handleSaveCard={handleSaveCard} />} />
+          <Route path="/" element={<Home handleSaveCard={handleSaveCard} isCardSaved={isCardSaved} resetCardSaved={resetCardSaved} />} />
           <Route path="/how-aura-works" element={<HowAuraWorks />} />
           <Route path="/how-to-ask" element={<HowToAsk />} />
           <Route path="/saved-cards" element={<SavedCards />} />
@@ -611,6 +655,10 @@ function App() {
         {isLoginModalOpen && (
           <Login onClose={() => setIsLoginModalOpen(false)} />
         )}
+
+        <div className={`save-notification ${showSaveNotice ? 'show' : ''}`}>
+          {t('card_saved_notice')}
+        </div>
 
         <footer className="app-footer">
           <p>{t("footer_text")}</p>

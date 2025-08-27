@@ -10,10 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700&family=Playfair+Display:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700&family=Playfair+Display:wght@700&display=swap"></noscript>
     
     <link rel="preload" href="/img/back-min.png" as="image">
     <title>Aura - Your Gentle Guide</title>
@@ -33,5 +31,10 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <div>
+        <p>Aura is your gentle guide for inner clarity. With heartfelt quotes and AI-powered reflections, Aura walks with you—helping you return to a place of calm and insight. Whatever you're moving through today, Aura is here to support you, softly and steadily. Ready to begin? Let’s take the first step together.</p>
+      </div>
+    </noscript>
   </body>
 </html>

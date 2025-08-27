@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { auth, getSavedCards, deleteCard } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,6 +14,7 @@ interface Card {
 }
 
 const SavedCards = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [savedCards, setSavedCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,18 +88,18 @@ const SavedCards = () => {
   };
 
   if (loading) {
-    return <p>Loading saved cards...</p>;
+    return <p>Loading your collection...</p>;
   }
 
   if (!user) {
-    return <p>Please log in to see your saved cards.</p>;
+    return <p>Please log in to see your collection.</p>;
   }
 
   return (
     <div>
-      <h2>Your Saved Cards</h2>
+      <h2>{t('saved_cards_title')}</h2>
       {savedCards.length === 0 ? (
-        <p>You have no saved cards.</p>
+        <p>Your collection is empty.</p>
       ) : (
         <>
           {Object.keys(groupedCards).map((date) => (
@@ -125,31 +127,31 @@ const SavedCards = () => {
       {showModal && selectedCard && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={selectedCard.image}
-              className="card-img-top"
-              alt={selectedCard.title}
-            />
+            <div style={{ position: 'relative' }}>
+              <img
+                src={selectedCard.image}
+                className="card-img-top"
+                alt={selectedCard.title}
+              />
+              <p className="card-timestamp">
+                Saved on: {new Date(selectedCard.time).toLocaleString()}
+              </p>
+            </div>
             <div className="card-body">
               <h5 className="card-title">{selectedCard.title}</h5>
               <p className="card-text">{selectedCard.quote}</p>
-              <p className="card-text">
-                <small className="text-muted">
-                  Saved on: {new Date(selectedCard.time).toLocaleString()}
-                </small>
-              </p>
               {selectedCard.ai_reply && (
                 <p className="card-text">{selectedCard.ai_reply}</p>
               )}
               <button
-                className="btn btn-danger btn-sm"
+                className="btn btn-danger"
                 onClick={() => {
                   setShowConfirmDialog(true);
                   setCardToDelete(selectedCard.id);
                   closeModal();
                 }}
               >
-                Delete
+                {t('delete')}
               </button>
             </div>
           </div>
@@ -159,10 +161,10 @@ const SavedCards = () => {
       {showConfirmDialog && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>Are you sure you want to delete this card?</h3>
+            <h3>{t('confirm_delete')}</h3>
             <div className="modal-buttons">
               <button className="btn btn-danger" onClick={handleDelete}>
-                Delete
+                {t('delete')}
               </button>
               <button
                 className="btn btn-secondary"
@@ -171,7 +173,7 @@ const SavedCards = () => {
                   setCardToDelete(null);
                 }}
               >
-                Cancel
+                {t('cancel')}
               </button>
             </div>
           </div>
