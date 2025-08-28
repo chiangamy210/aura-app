@@ -40,10 +40,14 @@ function Home({
   handleSaveCard,
   isCardSaved,
   resetCardSaved,
+  userQuestion,
+  setUserQuestion,
 }: {
   handleSaveCard: any;
   isCardSaved: boolean;
   resetCardSaved: any;
+  userQuestion: string;
+  setUserQuestion: (question: string) => void;
 }) {
   const { t, i18n } = useTranslation();
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
@@ -51,7 +55,6 @@ function Home({
   const [isStart, setIsStart] = useState(false);
   const [countdown, setCountdown] = useState(1);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
-  const [userQuestion, setUserQuestion] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [quotes, setQuotes] = useState<Quote[]>([]);
@@ -504,6 +507,7 @@ function App() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [showSaveNotice, setShowSaveNotice] = useState(false);
   const [isCardSaved, setIsCardSaved] = useState(false);
+  const [userQuestion, setUserQuestion] = useState("");
 
   const resetCardSaved = () => {
     setIsCardSaved(false);
@@ -550,6 +554,7 @@ function App() {
         id: cardIndex.toString(),
         time: new Date().toISOString(),
         ai_reply: aiResponse,
+        user_question: userQuestion,
       };
       saveCard(user.uid, cardToSave);
       setShowSaveNotice(true);
@@ -672,6 +677,8 @@ function App() {
                 handleSaveCard={handleSaveCard}
                 isCardSaved={isCardSaved}
                 resetCardSaved={resetCardSaved}
+                userQuestion={userQuestion}
+                setUserQuestion={setUserQuestion}
               />
             }
           />

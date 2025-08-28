@@ -57,6 +57,7 @@
     "confirm_delete": "您確定要刪除這張卡片嗎？",
     "cancel": "取消",
     "card_deleted_notice": "卡片已從您的收藏中刪除。",
-    "saved_cards_title": "我已儲存的卡片"
+    "saved_cards_title": "我已儲存的卡片",
+    "your_question": "你的提問："
   }
 }

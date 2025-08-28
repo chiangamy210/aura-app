@@ -59,6 +59,7 @@
     "confirm_delete": "Are you sure you want to delete this card?",
     "cancel": "Cancel",
     "card_deleted_notice": "Card deleted from your collection.",
-    "saved_cards_title": "My Saved Cards"
+    "saved_cards_title": "My Saved Cards",
+    "your_question": "Your Question:"
   }
 }

@@ -28,6 +28,7 @@ interface Card {
   image: string;
   time: string;
   ai_reply: string;
+  user_question: string;
 }
 
 export const saveCard = async (userId: string, card: Card) => {
@@ -38,6 +39,7 @@ export const saveCard = async (userId: string, card: Card) => {
       image: card.image,
       time: card.time,
       ai_reply: card.ai_reply,
+      user_question: card.user_question,
     });
     console.log("Card saved successfully!");
   } catch (error) {

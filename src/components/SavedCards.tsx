@@ -11,6 +11,7 @@ interface Card {
   image: string;
   time: string;
   ai_reply: string;
+  user_question: string;
 }
 
 const SavedCards = () => {
@@ -158,6 +159,9 @@ const SavedCards = () => {
             <div className="card-body">
               <h5 className="card-title">{selectedCard.title}</h5>
               <p className="card-text">{selectedCard.quote}</p>
+              {selectedCard.user_question && (
+                <p className="card-text">{t('your_question')} {selectedCard.user_question}</p>
+              )}
               {selectedCard.ai_reply && (
                 <p className="card-text">{selectedCard.ai_reply}</p>
               )}
