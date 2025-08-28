@@ -59,7 +59,11 @@ const SavedCards = () => {
   const handleDelete = async () => {
     if (user && cardToDelete) {
       await deleteCard(user.uid, cardToDelete);
-      setSavedCards(savedCards.filter((card) => card.id !== cardToDelete));
+      const newSavedCards = savedCards.filter(
+        (card) => card.id !== cardToDelete
+      );
+      setSavedCards(newSavedCards);
+      setGroupedCards(groupCardsByDate(newSavedCards));
       setShowConfirmDialog(false);
       setCardToDelete(null);
     }

@@ -36,7 +36,15 @@ const quoteModules = {
   "zh-TW": () => import("./quotes.zh-TW.json"),
 };
 
-function Home({ handleSaveCard, isCardSaved, resetCardSaved }: { handleSaveCard: any, isCardSaved: boolean, resetCardSaved: any }) {
+function Home({
+  handleSaveCard,
+  isCardSaved,
+  resetCardSaved,
+}: {
+  handleSaveCard: any;
+  isCardSaved: boolean;
+  resetCardSaved: any;
+}) {
   const { t, i18n } = useTranslation();
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
@@ -133,8 +141,6 @@ function Home({ handleSaveCard, isCardSaved, resetCardSaved }: { handleSaveCard:
     }
   }, [revealedCard]);
 
-  
-
   const handleCardSelect = (cardIndex: number) => {
     setSelectedFanCard(cardIndex);
     setAiResponse("");
@@ -227,8 +233,6 @@ function Home({ handleSaveCard, isCardSaved, resetCardSaved }: { handleSaveCard:
     setFanCardIndices(shuffledIndices.slice(0, fanCardsCount));
     setFanVisible(false); // Hide fan before it reappears
   };
-
-  
 
   const getCardFanStyles = (index: number) => {
     const cardsCount = fanCardIndices.length;
@@ -348,8 +352,12 @@ function Home({ handleSaveCard, isCardSaved, resetCardSaved }: { handleSaveCard:
                     </button>
                     <button
                       id="save-card-button"
-                      className={`btn ${isCardSaved ? 'btn-saved' : 'btn-success'} btn-sm`}
-                      onClick={(e) => handleSaveCard(card, cardIndex, aiResponse, e)}
+                      className={`btn ${
+                        isCardSaved ? "btn-saved" : "btn-success"
+                      } btn-sm`}
+                      onClick={(e) =>
+                        handleSaveCard(card, cardIndex, aiResponse, e)
+                      }
                       disabled={isCardSaved}
                     >
                       {isCardSaved ? (
@@ -367,10 +375,12 @@ function Home({ handleSaveCard, isCardSaved, resetCardSaved }: { handleSaveCard:
                               d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"
                             />
                           </svg>
-                          <span style={{ marginLeft: '8px' }}>{t('card_saved')}</span>
+                          <span style={{ marginLeft: "8px" }}>
+                            {t("card_saved")}
+                          </span>
                         </>
                       ) : (
-                        t('save_card')
+                        t("save_card")
                       )}
                     </button>
                   </div>
@@ -527,11 +537,20 @@ function App() {
     setIsUserMenuOpen(false);
   };
 
-  const handleSaveCard = (card: Quote, cardIndex: number, aiResponse: string, e) => {
+  const handleSaveCard = (
+    card: Quote,
+    cardIndex: number,
+    aiResponse: string
+  ) => {
     if (!user) {
       setIsLoginModalOpen(true);
     } else {
-      const cardToSave = { ...card, id: cardIndex.toString(), time: new Date().toISOString(), ai_reply: aiResponse };
+      const cardToSave = {
+        ...card,
+        id: cardIndex.toString(),
+        time: new Date().toISOString(),
+        ai_reply: aiResponse,
+      };
       saveCard(user.uid, cardToSave);
       setShowSaveNotice(true);
       setIsCardSaved(true);
@@ -646,7 +665,16 @@ function App() {
         </div>
 
         <Routes>
-          <Route path="/" element={<Home handleSaveCard={handleSaveCard} isCardSaved={isCardSaved} resetCardSaved={resetCardSaved} />} />
+          <Route
+            path="/"
+            element={
+              <Home
+                handleSaveCard={handleSaveCard}
+                isCardSaved={isCardSaved}
+                resetCardSaved={resetCardSaved}
+              />
+            }
+          />
           <Route path="/how-aura-works" element={<HowAuraWorks />} />
           <Route path="/how-to-ask" element={<HowToAsk />} />
           <Route path="/saved-cards" element={<SavedCards />} />
@@ -656,8 +684,8 @@ function App() {
           <Login onClose={() => setIsLoginModalOpen(false)} />
         )}
 
-        <div className={`save-notification ${showSaveNotice ? 'show' : ''}`}>
-          {t('card_saved_notice')}
+        <div className={`save-notification ${showSaveNotice ? "show" : ""}`}>
+          {t("card_saved_notice")}
         </div>
 
         <footer className="app-footer">
