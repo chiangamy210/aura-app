@@ -56,6 +56,7 @@
     "delete": "Eliminar",
     "confirm_delete": "¿Estás seguro de que quieres eliminar esta carta?",
     "cancel": "Cancelar",
+    "card_deleted_notice": "Carta eliminada de tu colección.",
     "saved_cards_title": "Mis Cartas Guardadas"
   }
 }

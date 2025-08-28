@@ -22,9 +22,19 @@ const SavedCards = () => {
   const [cardToDelete, setCardToDelete] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [showDeleteNotice, setShowDeleteNotice] = useState(false);
   const [groupedCards, setGroupedCards] = useState<{ [key: string]: Card[] }>(
     {}
   );
+
+  useEffect(() => {
+    if (showDeleteNotice) {
+      const timer = setTimeout(() => {
+        setShowDeleteNotice(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showDeleteNotice]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,6 +76,7 @@ const SavedCards = () => {
       setGroupedCards(groupCardsByDate(newSavedCards));
       setShowConfirmDialog(false);
       setCardToDelete(null);
+      setShowDeleteNotice(true);
     }
   };
 
@@ -101,6 +112,9 @@ const SavedCards = () => {
 
   return (
     <div>
+      <div className={`save-notification ${showDeleteNotice ? "show" : ""}`}>
+        {t("card_deleted_notice")}
+      </div>
       <h2>{t('saved_cards_title')}</h2>
       {savedCards.length === 0 ? (
         <p>Your collection is empty.</p>
