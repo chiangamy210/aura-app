@@ -53,7 +53,7 @@ function Home({
   const [drawnCardIndices, setDrawnCardIndices] = useState<number[]>([]);
   const [showButtons, setShowButtons] = useState(false);
   const [isStart, setIsStart] = useState(false);
-  const [countdown, setCountdown] = useState(1);
+  const [countdown, setCountdown] = useState(10);
   const [selectedCard, setSelectedCard] = useState<Quote | null>(null);
   const [aiResponse, setAiResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
