@@ -1,4 +1,3 @@
-
 :root {
   --primary-color: #1b1b2f; /* dark slate blue */
   --secondary-color: #5c5470; /* muted purple */
@@ -36,4 +35,8 @@ html {
   animation: background-pan 45s ease-in-out infinite;
   color: var(--text-color);
   overflow-x: hidden;
+}
+
+html[lang="es"] body {
+  font-size: 90%;
 }

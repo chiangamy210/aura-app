@@ -139,3 +139,30 @@
     padding: 0.5rem;
   }
 }
+
+@media (max-width: 320px) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  .app-container {
+    padding: 0.5rem;
+  }
+
+  .top-bar {
+    gap: 0.5rem;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .language-switcher button {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.6rem;
+  }
+
+  html[lang="es"] .top-bar {
+    padding: 1rem 0.5rem;
+  }
+}
